@@ -3,3 +3,7 @@
   margin: 1rem;
   border: 1px solid black;
 }
+
+.staff__item p {
+  cursor: pointer;
+}
