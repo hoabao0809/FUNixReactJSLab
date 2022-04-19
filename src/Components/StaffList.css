@@ -1,9 +1,32 @@
 .staff__item {
   padding: 1rem;
   margin: 1rem;
-  border: 1px solid black;
+  border: 1px solid #dee2e6;
+}
+
+.staff__item:hover {
+  background-color: #fafafa;
 }
 
 .staff__item p {
   cursor: pointer;
+}
+
+.staff__left img {
+  width: 100%;
+}
+
+.staff__right {
+  align-self: center;
+}
+
+.staff__right h5 {
+  margin-bottom: 1rem;
+}
+
+.staff__detail {
+  margin: auto;
+  padding: 1rem;
+  width: 80%;
+  border: 1px solid #dee2e6;
 }

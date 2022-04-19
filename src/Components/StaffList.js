@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import './StaffList.css';
 import dateFormat from 'dateformat';
+import logo from './../assets/images/alberto.png';
 
 class StaffList extends Component {
   constructor(props) {
@@ -21,13 +22,18 @@ class StaffList extends Component {
   renderStaffSelected(staff) {
     if (staff != null) {
       return (
-        <div>
-          <h6>Họ và tên: {staff.name}</h6>
-          <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>
-          <p>Ngày vào công ty: {dateFormat(staff.startDate, 'dd/mm/yyyy')}</p>
-          <p>Phòng ban: {staff.department.id}</p>
-          <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
-          <p>Số ngày đã làm thêm : {staff.overTime}</p>
+        <div className="row">
+          <div className="staff__left col-xs-12 col-md-4">
+            <img src={logo} alt={staff.image} />
+          </div>
+          <div className="staff__right col-xs-12 col-md-6">
+            <h5>Họ và tên: {staff.name}</h5>
+            <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>{' '}
+            <p>Ngày vào công ty: {dateFormat(staff.startDate, 'dd/mm/yyyy')}</p>
+            <p>Phòng ban: {staff.department.id}</p>
+            <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
+            <p>Số ngày đã làm thêm : {staff.overTime}</p>
+          </div>
         </div>
       );
     } else {
@@ -87,10 +93,9 @@ class StaffList extends Component {
     return (
       <div className="staffList container-fluid mt-3">
         <div className="container">
-          <div className="row">
+          <div className="">
             <select
               onChange={this.handleSelect}
-              //   value={this.state.value}
               className="form-select"
               aria-label="Default select example"
             >
@@ -100,8 +105,10 @@ class StaffList extends Component {
               <option value="6 cols">6 cột</option>
             </select>
           </div>
-          <div className="row">{this.renderList(this.state.colDisplay)}</div>
-          <div className="row">
+          <div className="row mt-3">
+            {this.renderList(this.state.colDisplay)}
+          </div>
+          <div className="staff__detail mt-3">
             {this.renderStaffSelected(this.state.selectedStaff)}
           </div>
         </div>
