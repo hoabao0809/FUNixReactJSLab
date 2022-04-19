@@ -117,7 +117,9 @@ class StaffList extends Component {
           <div className="row mt-3">
             {this.renderList(this.state.colDisplay)}
           </div>
-          <div className={this.state.selectedStaff && 'staff__detail mt-3'}>
+          <div
+            className={this.state.selectedStaff && 'staff__detail mt-3 mb-5'}
+          >
             {this.renderStaffSelected(this.state.selectedStaff)}
           </div>
         </div>
