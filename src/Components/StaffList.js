@@ -108,7 +108,7 @@ class StaffList extends Component {
               className="form-select"
               aria-label="Default select example"
             >
-              <option defaultValue>3 cột</option>
+              <option defaultValue>Display</option>
               <option value="2 cols">2 cột</option>
               <option value="3 cols">3 cột</option>
               <option value="6 cols">6 cột</option>
