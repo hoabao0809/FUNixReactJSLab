@@ -26,10 +26,10 @@ class StaffList extends Component {
     if (staff != null) {
       return (
         <div className="row">
-          <div className="staff__left col-xs-12 col-md-4">
+          <div className="staff__left col-xs-12 col-md-5">
             <img src={logo} alt={staff.image} />
           </div>
-          <div className="staff__right col-xs-12 col-md-6">
+          <div className="staff__right col-xs-12 col-md-7">
             <h5>Họ và tên: {staff.name}</h5>
             <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>{' '}
             <p>Ngày vào công ty: {dateFormat(staff.startDate, 'dd/mm/yyyy')}</p>
