@@ -31,7 +31,7 @@ class StaffList extends Component {
           </div>
           <div className="staff__right col-xs-12 col-md-7">
             <h5>Họ và tên: {staff.name}</h5>
-            <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>{' '}
+            <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>
             <p>Ngày vào công ty: {dateFormat(staff.startDate, 'dd/mm/yyyy')}</p>
             <p>Phòng ban: {staff.department.id}</p>
             <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
