@@ -19,6 +19,9 @@ class StaffList extends Component {
     });
   }
 
+  /**
+   * @description functions renders detail of selected staff
+   */
   renderStaffSelected(staff) {
     if (staff != null) {
       return (
@@ -41,6 +44,9 @@ class StaffList extends Component {
     }
   }
 
+  /**
+   * @description function renders staff list
+   */
   //   Tại sao chỗ này phải đổi thành arrow function
   renderList = (display) => {
     return this.props.staffs.map((staff) => {
@@ -60,6 +66,10 @@ class StaffList extends Component {
     });
   };
 
+  /**
+   * @description Function handle event when user select columns display
+   * @returns setState colDisplay matching user's option
+   */
   handleSelect = (event) => {
     switch (event.target.value) {
       case '2 cols':
@@ -67,7 +77,6 @@ class StaffList extends Component {
           selectedStaff: null,
           colDisplay: 'col-lg-6',
         });
-        console.log(this.state.colDisplay);
         break;
 
       case '3 cols':
