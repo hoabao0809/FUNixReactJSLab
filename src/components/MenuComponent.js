@@ -10,14 +10,6 @@ import {
 import Dishdetail from './DishdetailComponent';
 
 class Menu extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedDish: null,
-    };
-  }
-
   renderDish(dish) {
     if (dish != null) {
       return (
@@ -51,7 +43,7 @@ class Menu extends Component {
       <div className="container">
         <div className="row mt-3">{menu}</div>
         <div className="row mt-3">
-          <Dishdetail selectedDish={this.state.selectedDish} />
+          <Dishdetail selectedDish={this.props.selectedDish} />
         </div>
       </div>
     );
