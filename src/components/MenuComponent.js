@@ -23,7 +23,7 @@ const Menu = (props) => {
   return (
     <div className="container">
       <div className="row mt-3">{menu}</div>
-      <div className="row mt-3">
+      <div>
         <Dishdetail selectedDish={props.selectedDish} />
       </div>
     </div>

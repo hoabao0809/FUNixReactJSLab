@@ -15,23 +15,25 @@ const Dishdetail = (props) => {
       );
     });
     return (
-      <div>
-        <div className="col-12 col-md-5">
-          <Card>
-            <CardImg
-              width="100%"
-              src={selectedDish.image}
-              alt={selectedDish.name}
-            />
-            <CardBody>
-              <CardTitle>{selectedDish.name}</CardTitle>
-              <CardText>{selectedDish.description}</CardText>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="col-12 col-md-5">
-          <h2>Comments</h2>
-          {comments}
+      <div className="container">
+        <div className="row mt-3">
+          <div className="col-12 col-md-5">
+            <Card>
+              <CardImg
+                width="100%"
+                src={selectedDish.image}
+                alt={selectedDish.name}
+              />
+              <CardBody>
+                <CardTitle>{selectedDish.name}</CardTitle>
+                <CardText>{selectedDish.description}</CardText>
+              </CardBody>
+            </Card>
+          </div>
+          <div className="col-12 col-md-5">
+            <h2>Comments</h2>
+            {comments}
+          </div>
         </div>
       </div>
     );
