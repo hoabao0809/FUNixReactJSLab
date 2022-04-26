@@ -1,6 +1,8 @@
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import logoStaff from '../assets/images/alberto.png';
+import '../css/SalaryComponent.css';
 
 function RenderByCondition({ staffs, sortBy }) {
   let staffsArr = [...staffs];
@@ -34,10 +36,18 @@ function RenderSalary({ staff }) {
   return (
     <div className="col-12 col-md-6 col-lg-4">
       <div className="salary__item">
-        <h3>{staff.name}</h3>
-        <p>Mã nhân viên: {staff.id}</p>
-        <p>Hệ số lương: {staff.salaryScale}</p>
-        <p>Số ngày làm thêm: {staff.overTime}</p>
+        <div className="salary__header">
+          <div className="salary__img">
+            <img src={logoStaff} alt={staff.id} />
+          </div>
+          <div className="salary__name">
+            <h4>{staff.name}</h4>
+            <p>Mã nhân viên: {staff.id}</p>
+            <p>Hệ số lương: {staff.salaryScale}</p>
+            <p>Số ngày làm thêm: {staff.overTime}</p>
+          </div>
+        </div>
+
         <p>Lương: {salary}</p>
       </div>
     </div>

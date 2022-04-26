@@ -1,0 +1,16 @@
+.salary__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.salary__img img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.salary__item > p {
+  padding: 1rem;
+  background-color: #e9ecef;
+  text-align: center;
+}
