@@ -8,6 +8,7 @@ import {
   Collapse,
 } from 'reactstrap';
 import NavLink from 'react-router-dom/NavLink';
+import logo from '../assets/images/logo.png';
 
 export default class Header extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export default class Header extends Component {
           <div className="container">
             <NavbarToggler onClick={this.toggleNav} />
             <NavbarBrand className="mr-auto" href="/">
-              <img src="assets/images/logo.png" height="30" width="41" alt="" />
+              <img src={logo} height="30" width="41" alt="" />
             </NavbarBrand>
 
             <Collapse isOpen={this.state.isNavOpen} navbar>
