@@ -43,11 +43,15 @@ export default class Header extends Component {
                     <span className="fa fa-users fa-lg"> Nhân viên</span>
                   </NavLink>
                 </NavItem>
-                <NavItem className="nav-link" to="/department">
-                  <span className="fa fa-address-card fa-lg"> Phòng ban</span>
+                <NavItem>
+                  <NavLink className="nav-link" to="/department">
+                    <span className="fa fa-address-card fa-lg"> Phòng ban</span>
+                  </NavLink>
                 </NavItem>
-                <NavItem className="nav-link" to="/salary">
-                  <span className="fa fa-money fa-lg"> Lương</span>
+                <NavItem>
+                  <NavLink className="nav-link" to="/salary">
+                    <span className="fa fa-money fa-lg"> Lương</span>
+                  </NavLink>
                 </NavItem>
               </Nav>
             </Collapse>
