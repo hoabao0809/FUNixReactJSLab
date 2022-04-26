@@ -12,6 +12,17 @@ function StaffList({ staffs, keyword }) {
     (item) =>
       item.name.toLowerCase().indexOf(keyword.toLowerCase().trim()) != -1
   );
+  if (!searchArray || searchArray.length == 0) {
+    return (
+      <div className="container">
+        <div className="notFound">
+          <em>
+            <h2>Oops! No result found!</h2>
+          </em>
+        </div>
+      </div>
+    );
+  }
   return searchArray.map((item) => <RenderStaff key={item.id} staff={item} />);
 }
 
@@ -41,7 +52,9 @@ function StaffComponent({ staffs }) {
         <div className="search__content">
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label htmlFor="searchInput">Tìm kiếm</Label>
+              <Label htmlFor="searchInput">
+                <strong>Tìm kiếm</strong>
+              </Label>
               <div className="search__item">
                 <Input
                   id="searchInput"

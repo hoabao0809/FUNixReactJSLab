@@ -48,3 +48,9 @@ address {
   padding: 1rem;
   background-color: #e9ecef;
 }
+
+.notFound {
+  text-align: center;
+  padding: 1rem;
+  color: red;
+}
