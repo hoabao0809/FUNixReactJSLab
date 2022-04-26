@@ -1,6 +1,19 @@
 import '../css/StaffList.css';
 import logoStaff from '../assets/images/alberto.png';
 import { Link } from 'react-router-dom';
+import { Form, FormGroup, Label, Input } from 'reactstrap';
+import { useState } from 'react';
+
+function StaffList({ staffs, keyword }) {
+  if (!keyword) {
+    return staffs.map((staff) => <RenderStaff key={staff.id} staff={staff} />);
+  }
+  const searchArray = staffs.filter(
+    (item) =>
+      item.name.toLowerCase().indexOf(keyword.toLowerCase().trim()) != -1
+  );
+  return searchArray.map((item) => <RenderStaff key={item.id} staff={item} />);
+}
 
 function RenderStaff({ staff }) {
   return (
@@ -15,16 +28,33 @@ function RenderStaff({ staff }) {
   );
 }
 
+function handleSubmit(e) {
+  e.preventDefault();
+}
+
 function StaffComponent({ staffs }) {
+  const [searchKey, setSearchKey] = useState();
+
   return (
     <div className="staffList container-fluid my-3">
       <div className="container">
-      <input type="text" />
+        <div className="search__content">
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label htmlFor="searchInput">Tìm kiếm</Label>
+              <div className="search__item">
+                <Input
+                  id="searchInput"
+                  placeholder="Nhập tên tại đây"
+                  onChange={(e) => setSearchKey(e.target.value)}
+                />
+              </div>
+            </FormGroup>
+          </Form>
+        </div>
         <h3>Nhân viên</h3>
         <div className="row mt-3">
-          {staffs.map((staff) => (
-            <RenderStaff key={staff.id} staff={staff} />
-          ))}
+          <StaffList staffs={staffs} keyword={searchKey} />
         </div>
       </div>
     </div>
