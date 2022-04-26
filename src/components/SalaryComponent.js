@@ -1,5 +1,32 @@
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
+function RenderByCondition({ staffs, sortBy }) {
+  let staffsArr = [...staffs];
+
+  if (!sortBy || sortBy == 'defaultValue') {
+    return staffs.map((item) => <RenderSalary key={item.id} staff={item} />);
+  }
+
+  switch (sortBy) {
+    case 'id':
+      staffsArr = staffsArr.sort((a, b) => a.id - b.id);
+
+      return staffsArr.map((item) => (
+        <RenderSalary key={item.id} staff={item} />
+      ));
+
+    case 'salaryScale':
+      staffsArr = staffsArr.sort((a, b) => {
+        return a.salaryScale - b.salaryScale;
+      });
+
+      return staffsArr.map((item) => (
+        <RenderSalary key={item.id} staff={item} />
+      ));
+  }
+}
 
 function RenderSalary({ staff }) {
   const salary =
@@ -18,22 +45,32 @@ function RenderSalary({ staff }) {
 }
 
 export default function SalaryComponent({ staffs }) {
+  const [selectValue, handleSelect] = useState();
   return (
     <div className="container-fluid">
       <div className="container">
         <div className="row">
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <Link to="/staff">Nhân viên</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem active>Bảng Lương</BreadcrumbItem>
-          </Breadcrumb>
+          <div className="col-6">
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/staff">Nhân viên</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem active>Bảng Lương</BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+          <div className="col-6 text-right">
+            <select onChange={(e) => handleSelect(e.target.value)}>
+              <option defaultValue value="defaultValue">
+                Sắp xếp theo
+              </option>
+              <option value="id">Mã NV</option>
+              <option value="salaryScale">Mức lương</option>
+            </select>
+          </div>
         </div>
 
         <div className="row">
-          {staffs.map((item) => (
-            <RenderSalary key={item.id} staff={item} />
-          ))}
+          <RenderByCondition staffs={staffs} sortBy={selectValue} />
         </div>
       </div>
     </div>
