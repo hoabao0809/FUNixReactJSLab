@@ -1,8 +1,8 @@
 function RenderDepartment({ department }) {
   return (
-    <div className="col-xs-12 col-md-6 col-lg-4">
+    <div className="col-12 col-md-6 col-lg-4">
       <div className="department_item">
-        <h2>{department.name}</h2>
+        <h3>{department.name}</h3>
         <p>Số lượng nhân viên: {department.numberOfStaff}</p>
       </div>
     </div>

@@ -32,12 +32,19 @@ address {
   background-color: #512da8;
 }
 
-.department_item {
+.department_item,
+.salary__item {
   padding: 1rem;
   margin-bottom: 1rem;
   border: 1px solid #dee2e6;
 }
 
-.department_item:hover {
+.department_item:hover,
+.salary__item:hover {
   background: #fafafa;
+}
+
+.salary__item p:last-child {
+  padding: 1rem;
+  background-color: #e9ecef;
 }

@@ -6,6 +6,7 @@ import { STAFFS, DEPARTMENTS } from '../shared/staffs';
 import StaffComponent from './StaffsComponent';
 import StaffDetail from './StaffDetailComponent';
 import DepaComponent from './DepaComponent';
+import SalaryComponent from './SalaryComponent';
 
 class Main extends Component {
   constructor(props) {
@@ -48,6 +49,10 @@ class Main extends Component {
             component={() => (
               <DepaComponent departments={this.state.departments} />
             )}
+          />
+          <Route
+            path="/salary"
+            component={() => <SalaryComponent staffs={this.state.staffs} />}
           />
           <Redirect to="/staff" />
         </Switch>
