@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 import { useState } from 'react';
 
+/**
+ * @description Component search keyword
+ * check props nếu không có keyword thì render danh sách bình thường, nếu có thì filter lấy array mới và render, nếu không có kết quả search thì báo No Result Found
+ */
 function StaffList({ staffs, keyword }) {
   if (!keyword) {
     return staffs.map((staff) => <RenderStaff key={staff.id} staff={staff} />);
@@ -26,6 +30,7 @@ function StaffList({ staffs, keyword }) {
   return searchArray.map((item) => <RenderStaff key={item.id} staff={item} />);
 }
 
+// Component render 1 item Staff
 function RenderStaff({ staff }) {
   return (
     <div className="col-6 col-md-4 col-lg-2 my-2">
@@ -43,6 +48,7 @@ function handleSubmit(e) {
   e.preventDefault();
 }
 
+// Functional StaffComponent
 function StaffComponent({ staffs }) {
   const [searchKey, setSearchKey] = useState();
 

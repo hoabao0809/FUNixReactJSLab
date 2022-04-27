@@ -4,15 +4,21 @@ import { useState } from 'react';
 import logoStaff from '../assets/images/alberto.png';
 import '../css/SalaryComponent.css';
 
+/**
+ * @description Component render điều kiện lọc
+ * Nếu props sorby không có (user chưa chọn select) thì render danh sách như bình thường
+ * Nếu người dùng chọn sắp xếp => dùng switch case check điều kiện và render danh sách mới tương ứng
+ */
 function RenderByCondition({ staffs, sortBy }) {
   let staffsArr = [...staffs];
 
-  if (!sortBy || sortBy == 'defaultValue') {
+  if (!sortBy || sortBy === 'defaultValue') {
     return staffs.map((item) => <RenderSalary key={item.id} staff={item} />);
   }
 
   switch (sortBy) {
     case 'id':
+      // Sắp xếp Id theo thứ tự thấp -> cao
       staffsArr = staffsArr.sort((a, b) => a.id - b.id);
 
       return staffsArr.map((item) => (
@@ -20,6 +26,7 @@ function RenderByCondition({ staffs, sortBy }) {
       ));
 
     case 'salaryScale':
+      // Sắp xếp Hệ sống lương theo thứ tự thấp -> cao
       staffsArr = staffsArr.sort((a, b) => {
         return a.salaryScale - b.salaryScale;
       });
@@ -30,6 +37,7 @@ function RenderByCondition({ staffs, sortBy }) {
   }
 }
 
+// Component render 1 salary item
 function RenderSalary({ staff }) {
   const salary =
     parseInt(staff.salaryScale) * 3000000 + parseInt(staff.overTime) * 200000;
@@ -54,6 +62,7 @@ function RenderSalary({ staff }) {
   );
 }
 
+// Component Salary
 export default function SalaryComponent({ staffs }) {
   const [selectValue, handleSelect] = useState();
   return (

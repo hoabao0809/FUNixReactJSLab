@@ -4,6 +4,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import Link from 'react-router-dom/Link';
 import '../css/StaffDetail.css';
 
+// Component render 1 staff detail item
 function RenderStaffDetail({ staff }) {
   return (
     <div className="row staff_detail">
@@ -22,6 +23,7 @@ function RenderStaffDetail({ staff }) {
   );
 }
 
+// Component StaffDetail
 const StaffDetail = (props) => {
   if (props.staff != null) {
     return (
