@@ -79,7 +79,7 @@ export default function SalaryComponent({ staffs }) {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row mt-3">
           <RenderByCondition staffs={staffs} sortBy={selectValue} />
         </div>
       </div>
