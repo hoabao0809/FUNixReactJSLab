@@ -7,6 +7,7 @@ import { useState } from 'react';
 /**
  * @description Component search keyword
  * check props nếu không có keyword thì render danh sách bình thường, nếu có thì filter lấy array mới và render, nếu không có kết quả search thì báo No Result Found
+ * Nếu người dùng xóa keyword tìm kiếm thì render ra lại full danh sách
  */
 function StaffList({ staffs, keyword }) {
   if (!keyword) {
