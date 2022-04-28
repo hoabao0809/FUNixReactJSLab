@@ -52,11 +52,20 @@ class Contact extends Component {
     event.preventDefault();
   }
 
-  handleBlur = (field) => (event) => {
+  // Hỏi chỗ này
+  handleBlur = (field) => () => {
     this.setState({
       touched: { ...this.state.touched, [field]: true },
     });
   };
+
+  // handleBlur(field) {
+  //   return function (e) {
+  //     this.setState({
+  //       touched: { ...this.state.touched, [field]: true },
+  //     });
+  //   };
+  // }
 
   validate(firstname, lastname, telnum, email) {
     const errors = {
