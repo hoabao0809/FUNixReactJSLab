@@ -52,20 +52,24 @@ class Contact extends Component {
     event.preventDefault();
   }
 
-  // Hỏi chỗ này
+  //====================== Chú ý chỗ này ======================
+  /**
+   * Currying function: arrow function lexically add bind(this)
+   */
   handleBlur = (field) => () => {
     this.setState({
       touched: { ...this.state.touched, [field]: true },
     });
   };
 
-  // handleBlur(field) {
+  // Another way
+  // handleBlur = function (field) {
   //   return function (e) {
   //     this.setState({
   //       touched: { ...this.state.touched, [field]: true },
   //     });
-  //   };
-  // }
+  //   }.bind(this);
+  // }.bind(this);
 
   validate(firstname, lastname, telnum, email) {
     const errors = {
