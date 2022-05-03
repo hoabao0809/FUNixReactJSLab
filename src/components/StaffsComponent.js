@@ -12,13 +12,10 @@ import {
   ModalBody,
   ModalFooter,
   Label,
+  Col,
 } from 'reactstrap';
 
-/**
- * @description Component search keyword
- * check props nếu không có keyword thì render danh sách bình thường, nếu có thì filter lấy array mới và render, nếu không có kết quả search thì báo No Result Found
- * Nếu người dùng xóa keyword tìm kiếm thì render ra lại full danh sách
- */
+import DatePicker from 'reactstrap-date-picker/lib/DatePicker';
 
 const StaffList = ({ staffs, keyword }) => {
   if (!keyword) {
@@ -42,7 +39,6 @@ const StaffList = ({ staffs, keyword }) => {
   return searchArray.map((item) => <RenderStaff key={item.id} staff={item} />);
 };
 
-// Component render 1 item Staff
 function RenderStaff({ staff }) {
   return (
     <div className="col-6 col-md-4 col-lg-2 my-2">
@@ -61,25 +57,55 @@ class StaffComponent extends Component {
     super(props);
 
     this.state = {
+      newStaff: {
+        name: '',
+        doB: new Date().toISOString(),
+        startDate: new Date().toISOString(),
+        department: 'Sale',
+        salaryScale: 1,
+        annualLeave: 0,
+        overTime: 0,
+        image: '/assets/images/alberto.png',
+      },
+
       keyword: '',
       searchKey: '',
       isModalOpen: false,
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-  }
-
-  handleSubmit(e) {
-    this.setState({
-      searchKey: this.state.keyword,
-    });
-    e.preventDefault();
+    this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
+    this.handleChangeInput = this.handleChangeInput.bind(this);
+    this.handleSubmitInput = this.handleSubmitInput.bind(this);
   }
 
   toggleModal() {
     this.setState({
       isModalOpen: !this.state.isModalOpen,
+    });
+  }
+
+  handleSubmitSearch(e) {
+    e.preventDefault();
+    this.setState({
+      searchKey: this.state.keyword,
+    });
+  }
+
+  handleSubmitInput() {
+    const staffAdded = { ...this.state.newStaff };
+    localStorage.setItem('newStaff', JSON.stringify(staffAdded));
+  }
+
+  handleChangeInput(event) {
+    const value = event.target.value;
+    const name = event.target.name;
+
+    this.setState({
+      newStaff: {
+        ...this.state.newStaff,
+        [name]: value,
+      },
     });
   }
 
@@ -95,7 +121,7 @@ class StaffComponent extends Component {
               </Button>
             </div>
             <div className="search__content">
-              <Form onSubmit={this.handleSubmit}>
+              <Form onSubmit={this.handleSubmitSearch}>
                 <FormGroup>
                   <div className="search__item">
                     <Input
@@ -123,25 +149,134 @@ class StaffComponent extends Component {
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>
-            <Form>
-              <FormGroup>
-                <Label htmlFor="username">Tên</Label>
-                <Input
-                  type="text"
-                  id="username"
-                  name="username"
-                  innerRef={(input) => (this.username = input)}
-                ></Input>
+            <Form onSubmit={this.handleSubmitInput}>
+              <FormGroup row>
+                <Label htmlFor="name" md={4}>
+                  Tên
+                </Label>
+                <Col md={8}>
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={this.state.newStaff.name}
+                    onChange={this.handleChangeInput}
+                  />
+                </Col>
               </FormGroup>
-              <FormGroup>
-                <Label htmlFor="dateOfBirth">Ngày sinh</Label>
-                
+              <FormGroup row>
+                <Label htmlFor="doB" md={4}>
+                  Ngày sinh
+                </Label>
+                <Col md={8}>
+                  <DatePicker
+                    id="doB"
+                    name="doB"
+                    value={this.state.newStaff.doB}
+                    onChange={(v) =>
+                      this.setState({
+                        newStaff: {
+                          ...this.state.newStaff,
+                          doB: v,
+                        },
+                      })
+                    }
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label htmlFor="startDate" md={4}>
+                  Ngày vào công ty
+                </Label>
+                <Col md={8}>
+                  <DatePicker
+                    id="startDate"
+                    name="startDate"
+                    value={this.state.newStaff.startDate}
+                    onChange={(v) =>
+                      this.setState({
+                        newStaff: {
+                          ...this.state.newStaff,
+                          startDate: v,
+                        },
+                      })
+                    }
+                  />
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Label md={4}>Phòng ban</Label>
+                <Col md={8}>
+                  <Input
+                    type="select"
+                    name="department"
+                    value={this.state.newStaff.department}
+                    onChange={this.handleChangeInput}
+                  >
+                    <option>HR</option>
+                    <option>Marketing</option>
+                    <option>IT</option>
+                    <option>Finance</option>
+                  </Input>
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Label md={4} htmlFor="salaryScale">
+                  Hệ số lương
+                </Label>
+                <Col md={8}>
+                  <Input
+                    md={10}
+                    type="text"
+                    id="salaryScale"
+                    name="salaryScale"
+                    value={this.state.newStaff.salaryScale}
+                    placeholder="1.0 -> 
+                  3.0"
+                    onChange={this.handleChangeInput}
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label md={4} htmlFor="annualLeave">
+                  Số ngày nghỉ còn lại
+                </Label>
+                <Col md={8}>
+                  <Input
+                    md={10}
+                    type="text"
+                    id="annualLeave"
+                    name="annualLeave"
+                    value={this.state.newStaff.annualLeave}
+                    placeholder="1.0"
+                    onChange={this.handleChangeInput}
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label md={4} htmlFor="overTime">
+                  Số ngày đã làm thêm
+                </Label>
+                <Col md={8}>
+                  <Input
+                    md={10}
+                    type="text"
+                    id="overTime"
+                    name="overTime"
+                    value={this.state.newStaff.overTime}
+                    onChange={this.handleChangeInput}
+                  />
+                </Col>
               </FormGroup>
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button>Thêm</Button>
-            <Button>Cancel</Button>
+            <Button type="submit" onClick={this.handleSubmitInput}>
+              Thêm
+            </Button>
+            <Button onClick={this.toggleModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </React.Fragment>
