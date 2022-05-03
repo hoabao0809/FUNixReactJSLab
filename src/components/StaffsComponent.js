@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import '../css/StaffList.css';
 import logoStaff from '../assets/images/alberto.png';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button, FormGroup } from 'reactstrap';
+import {
+  Form,
+  Input,
+  Button,
+  FormGroup,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Label,
+} from 'reactstrap';
 
 /**
  * @description Component search keyword
@@ -46,7 +56,6 @@ function RenderStaff({ staff }) {
   );
 }
 
-// Functional StaffComponent
 class StaffComponent extends Component {
   constructor(props) {
     super(props);
@@ -54,50 +63,88 @@ class StaffComponent extends Component {
     this.state = {
       keyword: '',
       searchKey: '',
+      isModalOpen: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   handleSubmit(e) {
     this.setState({
       searchKey: this.state.keyword,
     });
-    console.log(this.state.searchKey);
     e.preventDefault();
+  }
+
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
   }
 
   render() {
     return (
-      <div className="staffList container-fluid my-3">
-        <div className="container">
-          <h3>Nhân viên</h3>
-          <div className="search__content">
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <div className="search__item">
-                  <Input
-                    id="searchInput"
-                    placeholder="Nhập tên tại đây"
-                    onChange={(e) =>
-                      this.setState({
-                        keyword: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </FormGroup>
-              <Button type="submit">Tìm</Button>
-            </Form>
-          </div>
-          <div className="row mt-3">
-            <StaffList
-              staffs={this.props.staffs}
-              keyword={this.state.searchKey}
-            />
+      <React.Fragment>
+        <div className="staffList container-fluid my-3">
+          <div className="container">
+            <h3>Nhân viên</h3>
+            <div className="btn__add">
+              <Button onClick={this.toggleModal}>
+                <span className="fa fa-plus fa-lg"></span>
+              </Button>
+            </div>
+            <div className="search__content">
+              <Form onSubmit={this.handleSubmit}>
+                <FormGroup>
+                  <div className="search__item">
+                    <Input
+                      id="searchInput"
+                      placeholder="Nhập tên tại đây"
+                      onChange={(e) =>
+                        this.setState({
+                          keyword: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </FormGroup>
+                <Button type="submit">Tìm</Button>
+              </Form>
+            </div>
+            <div className="row mt-3">
+              <StaffList
+                staffs={this.props.staffs}
+                keyword={this.state.searchKey}
+              />
+            </div>
           </div>
         </div>
-      </div>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label htmlFor="username">Tên</Label>
+                <Input
+                  type="text"
+                  id="username"
+                  name="username"
+                  innerRef={(input) => (this.username = input)}
+                ></Input>
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="dateOfBirth">Ngày sinh</Label>
+                
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button>Thêm</Button>
+            <Button>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      </React.Fragment>
     );
   }
 }
