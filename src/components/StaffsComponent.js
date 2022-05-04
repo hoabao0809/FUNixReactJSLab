@@ -17,11 +17,23 @@ import {
 
 import DatePicker from 'reactstrap-date-picker/lib/DatePicker';
 
-const StaffList = ({ staffs, keyword }) => {
-  if (!keyword) {
-    return staffs.map((staff) => <RenderStaff key={staff.id} staff={staff} />);
+const StaffList = ({ staffs, keyword, newStaff }) => {
+  const staffList = [...staffs];
+
+  if (newStaff) {
+    newStaff.forEach((item) => {
+      let idStaff = staffList[staffList.length - 1].id;
+      item.id = idStaff + 1;
+      staffList.push(item);
+    });
   }
-  const searchArray = staffs.filter(
+
+  if (!keyword) {
+    return staffList.map((staff) => (
+      <RenderStaff key={staff.id} staff={staff} />
+    ));
+  }
+  const searchArray = staffList.filter(
     (item) =>
       item.name.toLowerCase().indexOf(keyword.toLowerCase().trim()) !== -1
   );
@@ -93,8 +105,18 @@ class StaffComponent extends Component {
   }
 
   handleSubmitInput() {
-    const staffAdded = { ...this.state.newStaff };
-    localStorage.setItem('newStaff', JSON.stringify(staffAdded));
+    const duplicateStaff = { ...this.state.newStaff };
+    let staffAdded = [];
+    staffAdded.push(duplicateStaff);
+
+    const localSavedStaff = localStorage.getItem('newStaff');
+    if (localSavedStaff) {
+      const itemParse = JSON.parse(localSavedStaff);
+      itemParse.push(duplicateStaff);
+      localStorage.setItem('newStaff', JSON.stringify(itemParse));
+    } else {
+      localStorage.setItem('newStaff', JSON.stringify(staffAdded));
+    }
   }
 
   handleChangeInput(event) {
@@ -142,10 +164,12 @@ class StaffComponent extends Component {
               <StaffList
                 staffs={this.props.staffs}
                 keyword={this.state.searchKey}
+                newStaff={this.props.newStaff}
               />
             </div>
           </div>
         </div>
+
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>

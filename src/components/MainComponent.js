@@ -15,16 +15,24 @@ class Main extends Component {
     this.state = {
       staffs: STAFFS,
       departments: DEPARTMENTS,
+      newStaff: JSON.parse(localStorage.getItem('newStaff')),
     };
   }
 
   render() {
     const StaffWithId = ({ match }) => {
+      let staffListWithLoStorage = [...this.state.staffs];
+      if (this.state.newStaff) {
+        this.state.newStaff.forEach((item) =>
+          staffListWithLoStorage.push(item)
+        );
+      }
+
       return (
         <div className="mt-3 mb-5">
           <StaffDetail
             staff={
-              this.state.staffs.filter(
+              staffListWithLoStorage.filter(
                 (staff) => staff.id === parseInt(match.params.staffId, 10)
               )[0]
             }
@@ -41,7 +49,12 @@ class Main extends Component {
           <Route
             exact
             path="/staff"
-            component={() => <StaffComponent staffs={this.state.staffs} />}
+            component={() => (
+              <StaffComponent
+                staffs={this.state.staffs}
+                newStaff={this.state.newStaff}
+              />
+            )}
           />
           <Route path="/staff/:staffId" component={StaffWithId} />
           <Route
