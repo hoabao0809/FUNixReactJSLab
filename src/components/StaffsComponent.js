@@ -105,6 +105,7 @@ class StaffComponent extends Component {
   }
 
   handleSubmitInput() {
+    this.toggleModal();
     const duplicateStaff = { ...this.state.newStaff };
     let staffAdded = [];
     staffAdded.push(duplicateStaff);
@@ -160,6 +161,8 @@ class StaffComponent extends Component {
                 <Button type="submit">Tìm</Button>
               </Form>
             </div>
+
+            {/* Render Staff List */}
             <div className="row mt-3">
               <StaffList
                 staffs={this.props.staffs}
@@ -170,6 +173,7 @@ class StaffComponent extends Component {
           </div>
         </div>
 
+        {/* ========== Modal Add Staff ============== */}
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>
@@ -300,7 +304,9 @@ class StaffComponent extends Component {
             <Button type="submit" onClick={this.handleSubmitInput}>
               Thêm
             </Button>
-            <Button onClick={this.toggleModal}>Cancel</Button>
+            <Button type="button" onClick={this.toggleModal}>
+              Cancel
+            </Button>
           </ModalFooter>
         </Modal>
       </React.Fragment>
