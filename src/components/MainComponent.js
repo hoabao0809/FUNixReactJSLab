@@ -15,17 +15,16 @@ class Main extends Component {
     this.state = {
       staffs: STAFFS,
       departments: DEPARTMENTS,
-      newStaff: JSON.parse(localStorage.getItem('newStaff')),
     };
   }
 
   render() {
     const StaffWithId = ({ match }) => {
+      const newStaff = JSON.parse(localStorage.getItem('newStaff'));
+
       let staffListWithLoStorage = [...this.state.staffs];
-      if (this.state.newStaff) {
-        this.state.newStaff.forEach((item) =>
-          staffListWithLoStorage.push(item)
-        );
+      if (newStaff) {
+        newStaff.forEach((item) => staffListWithLoStorage.push(item));
       }
 
       return (
@@ -46,16 +45,7 @@ class Main extends Component {
       <React.Fragment>
         <Header />;
         <Switch>
-          <Route
-            exact
-            path="/staff"
-            component={() => (
-              <StaffComponent
-                staffs={this.state.staffs}
-                newStaff={this.state.newStaff}
-              />
-            )}
-          />
+          <Route exact path="/staff" component={() => <StaffComponent />} />
           <Route path="/staff/:staffId" component={StaffWithId} />
           <Route
             path="/department"

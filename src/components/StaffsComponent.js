@@ -16,17 +16,18 @@ import {
 } from 'reactstrap';
 
 import DatePicker from 'reactstrap-date-picker/lib/DatePicker';
+import { STAFFS } from '../shared/staffs';
 
 const StaffList = ({ staffs, keyword, newStaff }) => {
-  const staffList = [...staffs];
+  let staffList = [...staffs];
 
   if (newStaff) {
     newStaff.forEach((item) => {
-      let idStaff = staffList[staffList.length - 1].id;
-      item.id = idStaff + 1;
-      staffList.push(item);
+      staffList = [...staffList, item];
     });
   }
+  // Lọc các item trùng nhau
+  staffList = [...new Set(staffList)];
 
   if (!keyword) {
     return staffList.map((staff) => (
@@ -69,6 +70,9 @@ class StaffComponent extends Component {
     super(props);
 
     this.state = {
+      listStaffs: STAFFS,
+      newStaffLocal: JSON.parse(localStorage.getItem('newStaff')),
+
       newStaff: {
         name: '',
         doB: new Date().toISOString(),
@@ -107,8 +111,21 @@ class StaffComponent extends Component {
   handleSubmitInput() {
     this.toggleModal();
     const duplicateStaff = { ...this.state.newStaff };
+
+    let list = [...this.state.listStaffs];
+    if (this.state.newStaffLocal) {
+      this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
+    }
+
+    let idStaff = list[list.length - 1].id;
+    duplicateStaff.id = idStaff + 1;
     let staffAdded = [];
     staffAdded.push(duplicateStaff);
+    list.push(staffAdded[0]);
+
+    this.setState({
+      listStaffs: [...list],
+    });
 
     const localSavedStaff = localStorage.getItem('newStaff');
     if (localSavedStaff) {
@@ -165,9 +182,9 @@ class StaffComponent extends Component {
             {/* Render Staff List */}
             <div className="row mt-3">
               <StaffList
-                staffs={this.props.staffs}
+                staffs={this.state.listStaffs}
                 keyword={this.state.searchKey}
-                newStaff={this.props.newStaff}
+                newStaff={this.state.newStaffLocal}
               />
             </div>
           </div>
