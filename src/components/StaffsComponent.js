@@ -13,6 +13,7 @@ import {
   ModalFooter,
   Label,
   Col,
+  FormFeedback,
 } from 'reactstrap';
 
 import DatePicker from 'reactstrap-date-picker/lib/DatePicker';
@@ -75,8 +76,8 @@ class StaffComponent extends Component {
 
       newStaff: {
         name: '',
-        doB: new Date().toISOString(),
-        startDate: new Date().toISOString(),
+        doB: '',
+        startDate: '',
         department: 'Sale',
         salaryScale: 1,
         annualLeave: 0,
@@ -87,6 +88,7 @@ class StaffComponent extends Component {
       keyword: '',
       searchKey: '',
       isModalOpen: false,
+      errors: {},
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -109,6 +111,21 @@ class StaffComponent extends Component {
   }
 
   handleSubmitInput() {
+    this.setState({
+      errors: this.validate(
+        this.state.newStaff.name,
+        this.state.newStaff.name,
+        this.state.newStaff.startDate
+      ),
+    });
+
+    if (
+      this.state.errors.name !== '' &&
+      this.state.errors.doB !== '' &&
+      this.state.errors.startDate !== ''
+    ) {
+      return false;
+    }
     this.toggleModal();
     const duplicateStaff = { ...this.state.newStaff };
 
@@ -147,6 +164,32 @@ class StaffComponent extends Component {
         [name]: value,
       },
     });
+  }
+
+  validate(name, doB, startDate) {
+    const errors = {
+      name: '',
+      doB: '',
+      startDate: '',
+    };
+
+    if (!this.state.newStaff.name || name.length < 2) {
+      errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
+    } else if (!this.state.newStaff.name || name.length > 30) {
+      errors.name = 'Yêu cầu ít hơn 30 ký tự';
+    }
+
+    const reg =
+      /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+    if (!this.state.newStaff.doB && !reg.test(doB)) {
+      errors.doB = 'Yêu cầu nhập';
+    }
+
+    if (!this.state.newStaff.startDate && !reg.test(startDate)) {
+      errors.startDate = 'Yêu cầu nhập';
+    }
+
+    return errors;
   }
 
   render() {
@@ -204,9 +247,12 @@ class StaffComponent extends Component {
                     type="text"
                     id="name"
                     name="name"
+                    valid={this.state.errors.name === ''}
+                    invalid={this.state.errors.name !== ''}
                     value={this.state.newStaff.name}
                     onChange={this.handleChangeInput}
                   />
+                  <FormFeedback>{this.state.errors.name}</FormFeedback>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -217,6 +263,9 @@ class StaffComponent extends Component {
                   <DatePicker
                     id="doB"
                     name="doB"
+                    placeholder="dd/mm/yy"
+                    valid={this.state.errors.doB === ''}
+                    invalid={this.state.errors.doB !== ''}
                     value={this.state.newStaff.doB}
                     onChange={(v) =>
                       this.setState({
@@ -227,6 +276,7 @@ class StaffComponent extends Component {
                       })
                     }
                   />
+                  <FormFeedback>{this.state.errors.doB}</FormFeedback>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -237,6 +287,9 @@ class StaffComponent extends Component {
                   <DatePicker
                     id="startDate"
                     name="startDate"
+                    placeholder="dd/mm/yy"
+                    valid={this.state.errors.startDate === ''}
+                    invalid={this.state.errors.startDate !== ''}
                     value={this.state.newStaff.startDate}
                     onChange={(v) =>
                       this.setState({
@@ -247,6 +300,7 @@ class StaffComponent extends Component {
                       })
                     }
                   />
+                  <FormFeedback>{this.state.errors.startDate}</FormFeedback>
                 </Col>
               </FormGroup>
 

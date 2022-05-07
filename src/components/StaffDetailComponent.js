@@ -6,7 +6,6 @@ import '../css/StaffDetail.css';
 
 // Component render 1 staff detail item
 function RenderStaffDetail({ staff }) {
-  console.log(staff);
   return (
     <div className="row staff_detail">
       <div className="staff__left col-12 col-md-4 col-lg-3">
