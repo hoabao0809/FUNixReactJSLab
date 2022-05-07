@@ -50,3 +50,8 @@ address {
   padding: 1rem;
   color: red;
 }
+
+.search__bar {
+  width: 80%;
+  margin: 0;
+}

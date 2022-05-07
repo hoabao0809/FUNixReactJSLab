@@ -88,7 +88,11 @@ class StaffComponent extends Component {
       keyword: '',
       searchKey: '',
       isModalOpen: false,
-      errors: {},
+      errors: {
+        name: null,
+        doB: null,
+        startDate: null,
+      },
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -111,13 +115,7 @@ class StaffComponent extends Component {
   }
 
   handleSubmitInput() {
-    this.setState({
-      errors: this.validate(
-        this.state.newStaff.name,
-        this.state.newStaff.name,
-        this.state.newStaff.startDate
-      ),
-    });
+    this.validate();
 
     if (
       this.state.errors.name !== '' &&
@@ -164,32 +162,57 @@ class StaffComponent extends Component {
         [name]: value,
       },
     });
+    this.validateName();
   }
 
-  validate(name, doB, startDate) {
-    const errors = {
-      name: '',
-      doB: '',
-      startDate: '',
-    };
-
-    if (!this.state.newStaff.name || name.length < 2) {
-      errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
-    } else if (!this.state.newStaff.name || name.length > 30) {
-      errors.name = 'Yêu cầu ít hơn 30 ký tự';
+  validateName() {
+    if (!this.state.newStaff.name || this.state.newStaff.name.length < 2) {
+      this.setState({
+        errors: { ...this.state.errors, name: 'Yêu cầu tối thiểu hơn 2 ký tự' },
+      });
+    } else if (
+      !this.state.newStaff.name === '' ||
+      this.state.newStaff.name.length > 30
+    ) {
+      this.setState({
+        errors: { ...this.state.errors, name: 'Yêu cầu ít hơn 30 ký tự' },
+      });
+    } else {
+      this.setState({
+        errors: { ...this.state.errors, name: '' },
+      });
     }
+  }
 
-    const reg =
-      /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    if (!this.state.newStaff.doB && !reg.test(doB)) {
-      errors.doB = 'Yêu cầu nhập';
-    }
+  validate() {
+    // const errors = {
+    //   name: '',
+    //   doB: '',
+    //   startDate: '',
+    // };
 
-    if (!this.state.newStaff.startDate && !reg.test(startDate)) {
-      errors.startDate = 'Yêu cầu nhập';
-    }
+    this.validateName();
 
-    return errors;
+    // if (!this.state.newStaff.name || this.state.newStaff.name.length < 2) {
+    //   errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
+    // } else if (
+    //   !this.state.newStaff.name ||
+    //   this.state.newStaff.name.length > 30
+    // ) {
+    //   errors.name = 'Yêu cầu ít hơn 30 ký tự';
+    // }
+
+    // if (!this.state.newStaff.doB) {
+    //   errors.doB = 'Yêu cầu nhập';
+    // }
+
+    // if (!this.state.newStaff.startDate) {
+    //   errors.startDate = 'Yêu cầu nhập';
+    // }
+
+    // this.setState({
+    //   errors,
+    // });
   }
 
   render() {
