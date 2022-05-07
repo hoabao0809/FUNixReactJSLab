@@ -184,6 +184,28 @@ class StaffComponent extends Component {
     }
   }
 
+  onChangeDoB = (date, input) => {
+    this.setState({
+      newStaff: {
+        ...this.state.newStaff,
+        doB: date,
+      },
+    });
+
+    this.validateDate(input);
+  };
+
+  validateDate(input) {
+    if (!input || input === '') {
+      this.setState({
+        errors: { ...this.state.errors, doB: 'Yêu cầu nhập' },
+      });
+    } else {
+      this.setState({
+        errors: { ...this.state.errors, doB: 'Có input' },
+      });
+    }
+  }
   validate() {
     // const errors = {
     //   name: '',
@@ -192,6 +214,7 @@ class StaffComponent extends Component {
     // };
 
     this.validateName();
+    this.validateDate(this.state.newStaff.doB);
 
     // if (!this.state.newStaff.name || this.state.newStaff.name.length < 2) {
     //   errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
@@ -290,14 +313,15 @@ class StaffComponent extends Component {
                     valid={this.state.errors.doB === ''}
                     invalid={this.state.errors.doB !== ''}
                     value={this.state.newStaff.doB}
-                    onChange={(v) =>
-                      this.setState({
-                        newStaff: {
-                          ...this.state.newStaff,
-                          doB: v,
-                        },
-                      })
-                    }
+                    // onChange={(v, d) => {
+                    //   this.setState({
+                    //     newStaff: {
+                    //       ...this.state.newStaff,
+                    //       doB: v,
+                    //     },
+                    //   });
+                    // }}
+                    onChange={this.onChangeDoB}
                   />
                   <FormFeedback>{this.state.errors.doB}</FormFeedback>
                 </Col>
