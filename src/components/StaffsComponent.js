@@ -118,37 +118,36 @@ class StaffComponent extends Component {
     this.validate();
 
     if (
-      this.state.errors.name !== '' &&
-      this.state.errors.doB !== '' &&
-      this.state.errors.startDate !== ''
+      this.state.errors.name === '' &&
+      this.state.errors.doB === '' &&
+      this.state.errors.startDate === ''
     ) {
-      return false;
-    }
-    this.toggleModal();
-    const duplicateStaff = { ...this.state.newStaff };
+      this.toggleModal();
+      const duplicateStaff = { ...this.state.newStaff };
 
-    let list = [...this.state.listStaffs];
-    if (this.state.newStaffLocal) {
-      this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
-    }
+      let list = [...this.state.listStaffs];
+      if (this.state.newStaffLocal) {
+        this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
+      }
 
-    let idStaff = list[list.length - 1].id;
-    duplicateStaff.id = idStaff + 1;
-    let staffAdded = [];
-    staffAdded.push(duplicateStaff);
-    list.push(staffAdded[0]);
+      let idStaff = list[list.length - 1].id;
+      duplicateStaff.id = idStaff + 1;
+      let staffAdded = [];
+      staffAdded.push(duplicateStaff);
+      list.push(staffAdded[0]);
 
-    this.setState({
-      listStaffs: [...list],
-    });
+      this.setState({
+        listStaffs: [...list],
+      });
 
-    const localSavedStaff = localStorage.getItem('newStaff');
-    if (localSavedStaff) {
-      const itemParse = JSON.parse(localSavedStaff);
-      itemParse.push(duplicateStaff);
-      localStorage.setItem('newStaff', JSON.stringify(itemParse));
-    } else {
-      localStorage.setItem('newStaff', JSON.stringify(staffAdded));
+      const localSavedStaff = localStorage.getItem('newStaff');
+      if (localSavedStaff) {
+        const itemParse = JSON.parse(localSavedStaff);
+        itemParse.push(duplicateStaff);
+        localStorage.setItem('newStaff', JSON.stringify(itemParse));
+      } else {
+        localStorage.setItem('newStaff', JSON.stringify(staffAdded));
+      }
     }
   }
 
@@ -166,12 +165,15 @@ class StaffComponent extends Component {
   }
 
   validateName() {
-    if (!this.state.newStaff.name || this.state.newStaff.name.length < 2) {
+    if (
+      this.state.newStaff.name === '' ||
+      this.state.newStaff.name.length < 2
+    ) {
       this.setState({
         errors: { ...this.state.errors, name: 'Yêu cầu tối thiểu hơn 2 ký tự' },
       });
     } else if (
-      !this.state.newStaff.name === '' ||
+      this.state.newStaff.name === '' ||
       this.state.newStaff.name.length > 30
     ) {
       this.setState({
@@ -192,50 +194,69 @@ class StaffComponent extends Component {
       },
     });
 
-    this.validateDate(input);
+    this.validateDate(input, 'doB');
   };
 
-  validateDate(input) {
+  onChangeStartDate = (date, input) => {
+    this.setState({
+      newStaff: {
+        ...this.state.newStaff,
+        startDate: date,
+      },
+    });
+
+    this.validateDate(input, 'startDate');
+  };
+
+  validateDate(input, stateProp) {
     if (!input || input === '') {
       this.setState({
-        errors: { ...this.state.errors, doB: 'Yêu cầu nhập' },
+        errors: { ...this.state.errors, [stateProp]: 'Yêu cầu nhập' },
       });
     } else {
       this.setState({
-        errors: { ...this.state.errors, doB: 'Có input' },
+        errors: { ...this.state.errors, [stateProp]: '' },
       });
     }
   }
+
   validate() {
-    // const errors = {
-    //   name: '',
-    //   doB: '',
-    //   startDate: '',
-    // };
+    const errors = {
+      name: '',
+      doB: '',
+      startDate: '',
+    };
+    if (
+      this.state.newStaff.name === '' ||
+      this.state.newStaff.name.length < 2
+    ) {
+      errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
+    } else if (
+      this.state.newStaff.name === '' ||
+      this.state.newStaff.name.length > 30
+    ) {
+      errors.name = 'Yêu cầu ít hơn 30 ký tự';
+    } else {
+      errors.name = '';
+    }
 
-    this.validateName();
-    this.validateDate(this.state.newStaff.doB);
+    const inputA = this.state.newStaff.doB;
+    if (!inputA || inputA === '') {
+      errors.doB = 'Yêu cầu nhập';
+    } else {
+      errors.doB = '';
+    }
 
-    // if (!this.state.newStaff.name || this.state.newStaff.name.length < 2) {
-    //   errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
-    // } else if (
-    //   !this.state.newStaff.name ||
-    //   this.state.newStaff.name.length > 30
-    // ) {
-    //   errors.name = 'Yêu cầu ít hơn 30 ký tự';
-    // }
+    const inputB = this.state.newStaff.startDate;
+    if (!inputB || inputB === '') {
+      errors.startDate = 'Yêu cầu nhập';
+    } else {
+      errors.startDate = '';
+    }
 
-    // if (!this.state.newStaff.doB) {
-    //   errors.doB = 'Yêu cầu nhập';
-    // }
-
-    // if (!this.state.newStaff.startDate) {
-    //   errors.startDate = 'Yêu cầu nhập';
-    // }
-
-    // this.setState({
-    //   errors,
-    // });
+    this.setState({
+      errors,
+    });
   }
 
   render() {
@@ -338,14 +359,7 @@ class StaffComponent extends Component {
                     valid={this.state.errors.startDate === ''}
                     invalid={this.state.errors.startDate !== ''}
                     value={this.state.newStaff.startDate}
-                    onChange={(v) =>
-                      this.setState({
-                        newStaff: {
-                          ...this.state.newStaff,
-                          startDate: v,
-                        },
-                      })
-                    }
+                    onChange={this.onChangeStartDate}
                   />
                   <FormFeedback>{this.state.errors.startDate}</FormFeedback>
                 </Col>
