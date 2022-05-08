@@ -1,0 +1,41 @@
+.staff__item {
+  /* margin: 1rem; */
+  border: 1px solid #dee2e6;
+  text-align: center;
+  cursor: pointer;
+}
+
+.staff__item:hover {
+  background-color: #fafafa;
+}
+
+.staff__item p {
+  padding-top: 0.5rem;
+  cursor: pointer;
+}
+.staff__item img {
+  width: 100%;
+}
+
+.staff__left img {
+  width: 100%;
+}
+
+.staff__right {
+  align-self: center;
+}
+
+.staff__right h5 {
+  margin-bottom: 1rem;
+}
+
+.staff__detail {
+  margin: auto;
+  padding: 0.5rem;
+  width: 80%;
+  border: 1px solid #dee2e6;
+}
+
+.form-select {
+  padding: 0.5rem;
+}
