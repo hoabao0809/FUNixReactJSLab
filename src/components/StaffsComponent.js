@@ -13,11 +13,17 @@ import {
   ModalFooter,
   Label,
   Col,
-  FormFeedback,
+  Row,
 } from 'reactstrap';
 
-import DatePicker from 'reactstrap-date-picker/lib/DatePicker';
 import { STAFFS } from '../shared/staffs';
+import { Control, Errors, LocalForm } from 'react-redux-form';
+import DatePicker from 'react-widgets/DatePicker';
+import 'react-widgets/styles.css';
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
 
 const StaffList = ({ staffs, keyword, newStaff }) => {
   let staffList = [...staffs];
@@ -73,33 +79,34 @@ class StaffComponent extends Component {
     this.state = {
       listStaffs: STAFFS,
       newStaffLocal: JSON.parse(localStorage.getItem('newStaff')),
-
-      newStaff: {
-        name: '',
-        doB: '',
-        startDate: '',
-        department: 'Sale',
-        salaryScale: 1,
-        annualLeave: 0,
-        overTime: 0,
-        image: '/assets/images/alberto.png',
-      },
-
       keyword: '',
       searchKey: '',
       isModalOpen: false,
-      errors: {
-        name: null,
-        doB: null,
-        startDate: null,
-      },
     };
 
     this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
-    this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleSubmitInput = this.handleSubmitInput.bind(this);
   }
+
+  validateDatePicker = () => {
+    if (this.state.hasDatePicker === null) {
+      this.setState({
+        datePickerValid: false,
+      });
+    }
+    this.setState({
+      datePickerValid: true,
+    });
+  };
+
+  renderDatePicker = (props) => {
+    return (
+      <React.Fragment>
+        <DatePicker placeholder="mm/dd/yy" {...props} />
+      </React.Fragment>
+    );
+  };
 
   toggleModal() {
     this.setState({
@@ -114,149 +121,33 @@ class StaffComponent extends Component {
     });
   }
 
-  handleSubmitInput() {
-    this.validate();
+  handleSubmitInput(values) {
+    this.toggleModal();
+    const duplicateStaff = { ...values };
 
-    if (
-      this.state.errors.name === '' &&
-      this.state.errors.doB === '' &&
-      this.state.errors.startDate === ''
-    ) {
-      this.toggleModal();
-      const duplicateStaff = { ...this.state.newStaff };
-
-      let list = [...this.state.listStaffs];
-      if (this.state.newStaffLocal) {
-        this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
-      }
-
-      let idStaff = list[list.length - 1].id;
-      duplicateStaff.id = idStaff + 1;
-      let staffAdded = [];
-      staffAdded.push(duplicateStaff);
-      list.push(staffAdded[0]);
-
-      this.setState({
-        listStaffs: [...list],
-      });
-
-      const localSavedStaff = localStorage.getItem('newStaff');
-      if (localSavedStaff) {
-        const itemParse = JSON.parse(localSavedStaff);
-        itemParse.push(duplicateStaff);
-        localStorage.setItem('newStaff', JSON.stringify(itemParse));
-      } else {
-        localStorage.setItem('newStaff', JSON.stringify(staffAdded));
-      }
+    let list = [...this.state.listStaffs];
+    if (this.state.newStaffLocal) {
+      this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
     }
-  }
 
-  handleChangeInput(event) {
-    const value = event.target.value;
-    const name = event.target.name;
+    let idStaff = list[list.length - 1].id;
+    duplicateStaff.id = idStaff + 1;
+    let staffAdded = [];
+    staffAdded.push(duplicateStaff);
+    list.push(staffAdded[0]);
 
     this.setState({
-      newStaff: {
-        ...this.state.newStaff,
-        [name]: value,
-      },
-    });
-    this.validateName();
-  }
-
-  validateName() {
-    if (
-      this.state.newStaff.name === '' ||
-      this.state.newStaff.name.length < 2
-    ) {
-      this.setState({
-        errors: { ...this.state.errors, name: 'Yêu cầu tối thiểu hơn 2 ký tự' },
-      });
-    } else if (
-      this.state.newStaff.name === '' ||
-      this.state.newStaff.name.length > 30
-    ) {
-      this.setState({
-        errors: { ...this.state.errors, name: 'Yêu cầu ít hơn 30 ký tự' },
-      });
-    } else {
-      this.setState({
-        errors: { ...this.state.errors, name: '' },
-      });
-    }
-  }
-
-  onChangeDoB = (date, input) => {
-    this.setState({
-      newStaff: {
-        ...this.state.newStaff,
-        doB: date,
-      },
+      listStaffs: [...list],
     });
 
-    this.validateDate(input, 'doB');
-  };
-
-  onChangeStartDate = (date, input) => {
-    this.setState({
-      newStaff: {
-        ...this.state.newStaff,
-        startDate: date,
-      },
-    });
-
-    this.validateDate(input, 'startDate');
-  };
-
-  validateDate(input, stateProp) {
-    if (!input || input === '') {
-      this.setState({
-        errors: { ...this.state.errors, [stateProp]: 'Yêu cầu nhập' },
-      });
+    const localSavedStaff = localStorage.getItem('newStaff');
+    if (localSavedStaff) {
+      const itemParse = JSON.parse(localSavedStaff);
+      itemParse.push(duplicateStaff);
+      localStorage.setItem('newStaff', JSON.stringify(itemParse));
     } else {
-      this.setState({
-        errors: { ...this.state.errors, [stateProp]: '' },
-      });
+      localStorage.setItem('newStaff', JSON.stringify(staffAdded));
     }
-  }
-
-  validate() {
-    const errors = {
-      name: '',
-      doB: '',
-      startDate: '',
-    };
-    if (
-      this.state.newStaff.name === '' ||
-      this.state.newStaff.name.length < 2
-    ) {
-      errors.name = 'Yêu cầu tối thiểu hơn 2 ký tự';
-    } else if (
-      this.state.newStaff.name === '' ||
-      this.state.newStaff.name.length > 30
-    ) {
-      errors.name = 'Yêu cầu ít hơn 30 ký tự';
-    } else {
-      errors.name = '';
-    }
-
-    const inputA = this.state.newStaff.doB;
-    if (!inputA || inputA === '') {
-      errors.doB = 'Yêu cầu nhập';
-    } else {
-      errors.doB = '';
-    }
-
-    const inputB = this.state.newStaff.startDate;
-    if (!inputB || inputB === '') {
-      errors.startDate = 'Yêu cầu nhập';
-    } else {
-      errors.startDate = '';
-    }
-
-    this.setState({
-      errors,
-    });
   }
 
   render() {
@@ -264,29 +155,41 @@ class StaffComponent extends Component {
       <React.Fragment>
         <div className="staffList container-fluid my-3">
           <div className="container">
-            <h3>Nhân viên</h3>
-            <div className="btn__add">
-              <Button onClick={this.toggleModal}>
-                <span className="fa fa-plus fa-lg"></span>
-              </Button>
-            </div>
-            <div className="search__content">
-              <Form onSubmit={this.handleSubmitSearch}>
-                <FormGroup>
-                  <div className="search__item">
-                    <Input
-                      id="searchInput"
-                      placeholder="Nhập tên tại đây"
-                      onChange={(e) =>
-                        this.setState({
-                          keyword: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </FormGroup>
-                <Button type="submit">Tìm</Button>
-              </Form>
+            <div className="row">
+              <Col md={6} className="d-flex justify-content-between">
+                <h3>Nhân viên</h3>
+                <div className="btn__add" style={{ width: '50%' }}>
+                  <Button onClick={this.toggleModal}>
+                    <span className="fa fa-plus fa-lg"></span>
+                  </Button>
+                </div>
+              </Col>
+
+              <Col md={6}>
+                <div className="search__content">
+                  <Form
+                    onSubmit={this.handleSubmitSearch}
+                    className="d-flex justify-content-between"
+                  >
+                    <FormGroup style={{ width: '80%', marginBottom: '0' }}>
+                      <div className="search__item">
+                        <Input
+                          id="searchInput"
+                          placeholder="Nhập tên tại đây"
+                          onChange={(e) =>
+                            this.setState({
+                              keyword: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </FormGroup>
+                    <Button color="primary" type="submit">
+                      Tìm
+                    </Button>
+                  </Form>
+                </div>
+              </Col>
             </div>
 
             {/* Render Staff List */}
@@ -304,142 +207,159 @@ class StaffComponent extends Component {
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>
-            <Form onSubmit={this.handleSubmitInput}>
-              <FormGroup row>
-                <Label htmlFor="name" md={4}>
+            <LocalForm onSubmit={(values) => this.handleSubmitInput(values)}>
+              <Row className="form-group">
+                <Label htmlFor=".name" md={4}>
                   Tên
                 </Label>
                 <Col md={8}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".name"
                     id="name"
                     name="name"
-                    valid={this.state.errors.name === ''}
-                    invalid={this.state.errors.name !== ''}
-                    value={this.state.newStaff.name}
-                    onChange={this.handleChangeInput}
+                    className="form-control"
+                    validators={{
+                      minLength: minLength(2),
+                      maxLength: maxLength(30),
+                    }}
                   />
-                  <FormFeedback>{this.state.errors.name}</FormFeedback>
+                  <Errors
+                    className="text-danger"
+                    model=".name"
+                    show="touched"
+                    messages={{
+                      minLength: 'Yêu cầu tối thiểu hơn 2 ký tự',
+                      maxLength: 'Yêu cầu ít hơn 30 ký tự',
+                    }}
+                  />
                 </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label htmlFor="doB" md={4}>
+              </Row>
+              {/* https://davidkpiano.github.io/react-redux-form/docs/guides/custom-controls.html */}
+              <Row className="form-group">
+                <Label htmlFor=".doB" md={4}>
                   Ngày sinh
                 </Label>
                 <Col md={8}>
-                  <DatePicker
-                    id="doB"
-                    name="doB"
-                    placeholder="dd/mm/yy"
-                    valid={this.state.errors.doB === ''}
-                    invalid={this.state.errors.doB !== ''}
-                    value={this.state.newStaff.doB}
-                    // onChange={(v, d) => {
-                    //   this.setState({
-                    //     newStaff: {
-                    //       ...this.state.newStaff,
-                    //       doB: v,
-                    //     },
-                    //   });
-                    // }}
-                    onChange={this.onChangeDoB}
+                  <Control
+                    type="text"
+                    name="dob"
+                    component={this.renderDatePicker}
+                    model=".doB"
+                    mapProps={{
+                      value: (props) => props.viewValue,
+                    }}
                   />
-                  <FormFeedback>{this.state.errors.doB}</FormFeedback>
+                  <Errors
+                    className="text-danger"
+                    model=".doB"
+                    show="touched"
+                    messages={{
+                      required: 'Yêu cầu nhập',
+                    }}
+                  />
                 </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label htmlFor="startDate" md={4}>
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor=".startDate" md={4}>
                   Ngày vào công ty
                 </Label>
                 <Col md={8}>
-                  <DatePicker
-                    id="startDate"
+                  <Control
+                    type="text"
                     name="startDate"
-                    placeholder="dd/mm/yy"
-                    valid={this.state.errors.startDate === ''}
-                    invalid={this.state.errors.startDate !== ''}
-                    value={this.state.newStaff.startDate}
-                    onChange={this.onChangeStartDate}
+                    component={this.renderDatePicker}
+                    model=".startDate"
+                    mapProps={{
+                      value: (props) => props.viewValue,
+                    }}
                   />
-                  <FormFeedback>{this.state.errors.startDate}</FormFeedback>
+                  <Errors
+                    className="text-danger"
+                    model=".startDate"
+                    show="touched"
+                    messages={{
+                      required: 'Yêu cầu nhập',
+                    }}
+                  />
                 </Col>
-              </FormGroup>
-
-              <FormGroup row>
-                <Label md={4}>Phòng ban</Label>
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor=".department" md={4}>
+                  Phòng ban
+                </Label>
                 <Col md={8}>
-                  <Input
-                    type="select"
+                  <Control.select
+                    model=".department"
                     name="department"
-                    value={this.state.newStaff.department}
-                    onChange={this.handleChangeInput}
+                    className="form-control"
+                    defaultValue="HR"
                   >
                     <option>HR</option>
                     <option>Marketing</option>
                     <option>IT</option>
                     <option>Finance</option>
-                  </Input>
+                  </Control.select>
                 </Col>
-              </FormGroup>
-
-              <FormGroup row>
-                <Label md={4} htmlFor="salaryScale">
+              </Row>
+              <Row className="form-group">
+                <Label md={4} htmlFor=".salaryScale">
                   Hệ số lương
                 </Label>
                 <Col md={8}>
-                  <Input
+                  <Control.text
                     md={10}
                     type="text"
+                    model=".salaryScale"
                     id="salaryScale"
+                    className="form-control"
                     name="salaryScale"
-                    value={this.state.newStaff.salaryScale}
+                    defaultValue="1"
                     placeholder="1.0 -> 
                   3.0"
-                    onChange={this.handleChangeInput}
                   />
                 </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label md={4} htmlFor="annualLeave">
+              </Row>
+              <Row className="form-group">
+                <Label md={4} htmlFor=".annualLeave">
                   Số ngày nghỉ còn lại
                 </Label>
                 <Col md={8}>
-                  <Input
+                  <Control.text
                     md={10}
                     type="text"
                     id="annualLeave"
                     name="annualLeave"
-                    value={this.state.newStaff.annualLeave}
+                    className="form-control"
+                    model=".annualLeave"
+                    defaultValue="0"
                     placeholder="1.0"
-                    onChange={this.handleChangeInput}
                   />
                 </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label md={4} htmlFor="overTime">
+              </Row>
+              <Row className="form-group">
+                <Label md={4} htmlFor=".overTime">
                   Số ngày đã làm thêm
                 </Label>
                 <Col md={8}>
-                  <Input
+                  <Control.text
                     md={10}
                     type="text"
+                    className="form-control"
                     id="overTime"
                     name="overTime"
-                    value={this.state.newStaff.overTime}
-                    onChange={this.handleChangeInput}
+                    model=".overTime"
+                    defaultValue="0"
                   />
                 </Col>
-              </FormGroup>
-            </Form>
+              </Row>
+              <ModalFooter>
+                <Button type="submit">Thêm</Button>
+                <Button type="button" onClick={this.toggleModal}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </LocalForm>
           </ModalBody>
-          <ModalFooter>
-            <Button type="submit" onClick={this.handleSubmitInput}>
-              Thêm
-            </Button>
-            <Button type="button" onClick={this.toggleModal}>
-              Cancel
-            </Button>
-          </ModalFooter>
         </Modal>
       </React.Fragment>
     );
