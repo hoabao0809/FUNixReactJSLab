@@ -264,29 +264,41 @@ class StaffComponent extends Component {
       <React.Fragment>
         <div className="staffList container-fluid my-3">
           <div className="container">
-            <h3>Nhân viên</h3>
-            <div className="btn__add">
-              <Button onClick={this.toggleModal}>
-                <span className="fa fa-plus fa-lg"></span>
-              </Button>
-            </div>
-            <div className="search__content">
-              <Form onSubmit={this.handleSubmitSearch}>
-                <FormGroup>
-                  <div className="search__item">
-                    <Input
-                      id="searchInput"
-                      placeholder="Nhập tên tại đây"
-                      onChange={(e) =>
-                        this.setState({
-                          keyword: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </FormGroup>
-                <Button type="submit">Tìm</Button>
-              </Form>
+            <div className="row">
+              <Col md={6} className="d-flex justify-content-between">
+                <h3>Nhân viên</h3>
+                <div className="btn__add" style={{ width: '50%' }}>
+                  <Button onClick={this.toggleModal}>
+                    <span className="fa fa-plus fa-lg"></span>
+                  </Button>
+                </div>
+              </Col>
+
+              <Col md={6}>
+                <div className="search__content">
+                  <Form
+                    onSubmit={this.handleSubmitSearch}
+                    className="d-flex justify-content-between"
+                  >
+                    <FormGroup style={{ width: '80%', marginBottom: '0' }}>
+                      <div className="search__item">
+                        <Input
+                          id="searchInput"
+                          placeholder="Nhập tên tại đây"
+                          onChange={(e) =>
+                            this.setState({
+                              keyword: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </FormGroup>
+                    <Button color="primary" type="submit">
+                      Tìm
+                    </Button>
+                  </Form>
+                </div>
+              </Col>
             </div>
 
             {/* Render Staff List */}
@@ -334,14 +346,6 @@ class StaffComponent extends Component {
                     valid={this.state.errors.doB === ''}
                     invalid={this.state.errors.doB !== ''}
                     value={this.state.newStaff.doB}
-                    // onChange={(v, d) => {
-                    //   this.setState({
-                    //     newStaff: {
-                    //       ...this.state.newStaff,
-                    //       doB: v,
-                    //     },
-                    //   });
-                    // }}
                     onChange={this.onChangeDoB}
                   />
                   <FormFeedback>{this.state.errors.doB}</FormFeedback>
