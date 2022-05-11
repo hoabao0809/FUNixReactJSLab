@@ -82,9 +82,6 @@ class StaffComponent extends Component {
       keyword: '',
       searchKey: '',
       isModalOpen: false,
-
-      hasDatePicker: null,
-      datePickerValid: null,
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -92,17 +89,11 @@ class StaffComponent extends Component {
     this.handleSubmitInput = this.handleSubmitInput.bind(this);
   }
 
-  validateDatePicker = () => {
-    alert(1);
-    if (this.state.hasDatePicker === null || this.state.hasDatePicker === '') {
-      this.setState({
-        datePickerValid: false,
-      });
-    }
+  toggleModal() {
     this.setState({
-      datePickerValid: true,
+      isModalOpen: !this.state.isModalOpen,
     });
-  };
+  }
 
   renderDatePicker = (props) => {
     console.log(props.value);
@@ -115,12 +106,6 @@ class StaffComponent extends Component {
       </React.Fragment>
     );
   };
-
-  toggleModal() {
-    this.setState({
-      isModalOpen: !this.state.isModalOpen,
-    });
-  }
 
   handleSubmitSearch(e) {
     e.preventDefault();
@@ -227,6 +212,7 @@ class StaffComponent extends Component {
                     name="name"
                     className="form-control"
                     validators={{
+                      required,
                       minLength: minLength(2),
                       maxLength: maxLength(30),
                     }}
@@ -236,7 +222,8 @@ class StaffComponent extends Component {
                     model=".name"
                     show="touched"
                     messages={{
-                      minLength: 'Yêu cầu tối thiểu hơn 2 ký tự',
+                      required: 'Yêu cầu nhập',
+                      minLength: '  Nhập tối thiểu hơn 2 ký tự',
                       maxLength: 'Yêu cầu ít hơn 30 ký tự',
                     }}
                   />
@@ -279,14 +266,6 @@ class StaffComponent extends Component {
                     model=".startDate"
                     mapProps={{
                       value: (props) => props.viewValue,
-                    }}
-                  />
-                  <Errors
-                    className="text-danger"
-                    model=".startDate"
-                    show="touched"
-                    messages={{
-                      required: 'Yêu cầu nhập',
                     }}
                   />
                 </Col>
