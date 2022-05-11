@@ -82,6 +82,9 @@ class StaffComponent extends Component {
       keyword: '',
       searchKey: '',
       isModalOpen: false,
+
+      hasDatePicker: null,
+      datePickerValid: null,
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -90,7 +93,8 @@ class StaffComponent extends Component {
   }
 
   validateDatePicker = () => {
-    if (this.state.hasDatePicker === null) {
+    alert(1);
+    if (this.state.hasDatePicker === null || this.state.hasDatePicker === '') {
       this.setState({
         datePickerValid: false,
       });
@@ -101,9 +105,13 @@ class StaffComponent extends Component {
   };
 
   renderDatePicker = (props) => {
+    console.log(props.value);
     return (
       <React.Fragment>
         <DatePicker placeholder="mm/dd/yy" {...props} />
+        {(props.value === null || props.value === undefined) && (
+          <div className="text-danger">Yêu cầu nhập</div>
+        )}
       </React.Fragment>
     );
   };
