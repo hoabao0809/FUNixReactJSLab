@@ -16,6 +16,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Row } from 'reactstrap';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
@@ -133,18 +134,22 @@ function RenderComments({ comments, postComment, dishId }) {
   if (comments != null) {
     return (
       <div className="col-12 col-md-5">
-        <h2>Comments</h2>
-        {comments.map((item) => {
-          return (
-            <div key={item.id} className="comments">
-              <p>{item.comment}</p>
-              <p>
-                -- {item.author}, {item.date}
-              </p>
-            </div>
-          );
-        })}
-        <CommentForm dishId={dishId} postComment={postComment} />
+        <Stagger in>
+          <h2>Comments</h2>
+          {comments.map((item) => {
+            return (
+              <Fade in>
+                <div key={item.id} className="comments">
+                  <p>{item.comment}</p>
+                  <p>
+                    -- {item.author}, {item.date}
+                  </p>
+                </div>
+              </Fade>
+            );
+          })}
+          <CommentForm dishId={dishId} postComment={postComment} />
+        </Stagger>
       </div>
     );
   } else {
@@ -155,13 +160,20 @@ function RenderComments({ comments, postComment, dishId }) {
 function RenderDish({ dish }) {
   return (
     <div className="col-12 col-md-5">
-      <Card>
-        <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
-        <CardBody>
-          <CardTitle>{dish.name}</CardTitle>
-          <CardText>{dish.description}</CardText>
-        </CardBody>
-      </Card>
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: 'scale(0.5) translateY(-50%)',
+        }}
+      >
+        <Card>
+          <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+          <CardBody>
+            <CardTitle>{dish.name}</CardTitle>
+            <CardText>{dish.description}</CardText>
+          </CardBody>
+        </Card>
+      </FadeTransform>
     </div>
   );
 }
