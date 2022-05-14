@@ -1,5 +1,4 @@
 import * as ActionTypes from './ActionTypes';
-import { DISHES } from '../shared/dishes';
 import { baseUrl } from '../shared/baseUrl';
 
 export const addComment = (comment) => ({
@@ -39,8 +38,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
         }
       },
       (error) => {
-        var errmess = new Error(error.message);
-        throw errmess;
+        throw new Error(error.message);
       }
     )
     .then((response) => response.json())
@@ -52,7 +50,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 };
 
 export const fetchDishes = () => (dispatch) => {
-  dispatch(dishesLoading(true));
+  dispatch(dishesLoading());
 
   return fetch(baseUrl + 'dishes')
     .then(
@@ -68,8 +66,7 @@ export const fetchDishes = () => (dispatch) => {
         }
       },
       (error) => {
-        var errmess = new Error(error.message);
-        throw errmess;
+        throw new Error(error.message);
       }
     )
     .then((response) => response.json())
@@ -106,8 +103,7 @@ export const fetchComments = () => (dispatch) => {
         }
       },
       (error) => {
-        var errmess = new Error(error.message);
-        throw errmess;
+        throw new Error(error.message);
       }
     )
     .then((response) => response.json())
@@ -142,8 +138,7 @@ export const fetchPromos = () => (dispatch) => {
         }
       },
       (error) => {
-        var errmess = new Error(error.message);
-        throw errmess;
+        throw new Error(error.message);
       }
     )
     .then((response) => response.json())
