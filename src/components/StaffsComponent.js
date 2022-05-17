@@ -77,7 +77,6 @@ class StaffComponent extends Component {
 
     this.state = {
       // listStaffs: STAFFS,
-      newStaffLocal: JSON.parse(localStorage.getItem('newStaff')),
       keyword: '',
       searchKey: '',
       isModalOpen: false,
@@ -114,32 +113,22 @@ class StaffComponent extends Component {
 
   handleSubmitInput(values) {
     this.toggleModal();
-    alert(JSON.stringify(values));
-    // const duplicateStaff = { ...values };
 
-    // let list = [...this.state.listStaffs];
-    // if (this.state.newStaffLocal) {
-    //   this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
-    // }
+    const department = this.props.departments.filter(
+      (item) => item.name === values.department
+    )[0];
 
-    // let idStaff = list[list.length - 1].id;
-    // duplicateStaff.id = idStaff + 1;
-    // let staffAdded = [];
-    // staffAdded.push(duplicateStaff);
-    // list.push(staffAdded[0]);
+    const salary =
+      parseInt(values.salaryScale) * 3000000 +
+      parseInt(values.overTime) * 200000;
 
-    // this.setState({
-    //   listStaffs: [...list],
-    // });
-
-    // const localSavedStaff = localStorage.getItem('newStaff');
-    // if (localSavedStaff) {
-    //   const itemParse = JSON.parse(localSavedStaff);
-    //   itemParse.push(duplicateStaff);
-    //   localStorage.setItem('newStaff', JSON.stringify(itemParse));
-    // } else {
-    //   localStorage.setItem('newStaff', JSON.stringify(staffAdded));
-    // }
+    this.props.postStaff({
+      ...values,
+      id: this.props.staffs.length,
+      departmentId: department.id,
+      image: '/assets/images/alberto.png',
+      salary,
+    });
   }
 
   render() {
@@ -189,7 +178,6 @@ class StaffComponent extends Component {
               <StaffList
                 staffs={this.props.staffs}
                 keyword={this.state.searchKey}
-                newStaff={this.state.newStaffLocal}
               />
             </div>
           </div>
@@ -276,7 +264,7 @@ class StaffComponent extends Component {
                 <Col md={8}>
                   <Control.select
                     model=".department"
-                    name="department"
+                    name="departmen"
                     className="form-control"
                     defaultValue="HR"
                   >

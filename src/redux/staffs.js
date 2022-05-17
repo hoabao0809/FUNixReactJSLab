@@ -1,3 +1,4 @@
+import { actionTypes } from 'react-redux-form';
 import * as ActionTypes from './ActionTypes';
 
 export const Staffs = (
@@ -25,8 +26,15 @@ export const Staffs = (
       };
 
     case ActionTypes.ADD_STAFF:
-      var staff = action.payload;
+      let staff = action.payload;
       return { ...state, staffs: state.staffs.concat(staff) };
+
+    case ActionTypes.REMOVE_STAFF:
+      let id = action.payload;
+      return {
+        ...state,
+        staffs: state.staffs.filter((item) => item.id !== id),
+      };
 
     default:
       return state;

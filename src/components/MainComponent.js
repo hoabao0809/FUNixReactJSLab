@@ -7,7 +7,12 @@ import StaffDetail from './StaffDetailComponent';
 import DepaComponent from './DepaComponent';
 import SalaryComponent from './SalaryComponent';
 import { connect } from 'react-redux';
-import { fetchStaffs, fetchDepartments } from '../redux/ActionCreators';
+import {
+  fetchStaffs,
+  postStaff,
+  fetchDepartments,
+  deleteStaff,
+} from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
   return {
@@ -23,6 +28,12 @@ const mapDispatchToProps = (dispatch) => ({
   fetchDepartments: () => {
     dispatch(fetchDepartments());
   },
+  postStaff: (staff) => {
+    dispatch(postStaff(staff));
+  },
+  deleteStaff: (id) => {
+    dispatch(deleteStaff(id));
+  },
 });
 
 class Main extends Component {
@@ -32,13 +43,6 @@ class Main extends Component {
   }
   render() {
     const StaffWithId = ({ match }) => {
-      // const newStaff = JSON.parse(localStorage.getItem('newStaff'));
-
-      // let staffListWithLoStorage = [...this.props.staffs];
-      // if (newStaff) {
-      //   newStaff.forEach((item) => staffListWithLoStorage.push(item));
-      // }
-
       let listStaffs = [...this.props.staffs];
       let listDeparts = [...this.props.departments];
       const staffSelected = listStaffs.filter(
@@ -54,6 +58,7 @@ class Main extends Component {
                 (item) => item.id === staffSelected.departmentId
               )[0]
             }
+            deleteStaff={this.props.deleteStaff}
           />
         </div>
       );
@@ -66,7 +71,13 @@ class Main extends Component {
           <Route
             exact
             path="/staff"
-            component={() => <StaffComponent staffs={this.props.staffs} />}
+            component={() => (
+              <StaffComponent
+                staffs={this.props.staffs}
+                postStaff={this.props.postStaff}
+                departments={this.props.departments}
+              />
+            )}
           />
           <Route path="/staff/:staffId" component={StaffWithId} />
           <Route

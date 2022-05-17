@@ -1,27 +1,11 @@
 import * as ActionTypes from './ActionTypes';
-import { baseUrl } from '../api/baseUrl';
+import * as apiServices from '../api/services';
 
 export const fetchStaffs = () => (dispatch) => {
   // dispatch(staffLoading())
 
-  return fetch(baseUrl + 'staffs')
-    .then(
-      (response) => {
-        if (response.ok) {
-          return response;
-        } else {
-          var error = new Error(
-            'Error' + response.status + ': ' + response.statusText
-          );
-          error.response = response;
-          throw error;
-        }
-      },
-      (error) => {
-        var errmess = new Error(error.message);
-        throw errmess;
-      }
-    )
+  apiServices
+    .get('staffs')
     .then((response) => response.json())
     .then((staffs) => dispatch(addStaffs(staffs)))
     .catch((error) => dispatch(staffsFailed(error.message)));
@@ -37,26 +21,49 @@ export const staffsFailed = (errmess) => ({
   payload: errmess,
 });
 
+export const addStaff = (staff) => ({
+  type: ActionTypes.ADD_STAFF,
+  payload: staff,
+});
+
+export const postStaff = (staff) => (dispatch) => {
+  apiServices
+    .post('staffs', staff)
+    .then((response) => {
+      if (response.ok) {
+        dispatch(addStaff(staff));
+        console.log(response.statusText);
+      }
+    })
+    .catch((error) => {
+      console.log('Post staff', error.message);
+      alert('Your staff could not be posted\nError: ' + error.message);
+    });
+};
+
+export const deleteStaff = (staffId) => (dispatch) => {
+  apiServices
+    .del(staffId)
+    .then((response) => {
+      if (response.ok) {
+        dispatch(removeStaff(staffId));
+      }
+    })
+    .catch((error) => {
+      console.log('Delete staff', error.message);
+      alert('Your staff could not be deleted\nError: ' + error.message);
+    });
+};
+
+export const removeStaff = (staffId) => ({
+  type: ActionTypes.REMOVE_STAFF,
+  payload: staffId,
+});
+
 // Departments
 export const fetchDepartments = () => (dispatch) => {
-  return fetch(baseUrl + 'departments')
-    .then(
-      (response) => {
-        if (response.ok) {
-          return response;
-        } else {
-          var error = new Error(
-            'Error' + response.status + ': ' + response.statusText
-          );
-          error.response = response;
-          throw error;
-        }
-      },
-      (error) => {
-        var errmess = new Error(error.message);
-        throw errmess;
-      }
-    )
+  apiServices
+    .get('departments')
     .then((response) => response.json())
     .then((departments) => {
       dispatch(addDeparts(departments));
