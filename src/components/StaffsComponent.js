@@ -16,7 +16,6 @@ import {
   Row,
 } from 'reactstrap';
 
-// import { STAFFS } from '../shared/staffs';
 import { Control, Errors, LocalForm } from 'react-redux-form';
 import DatePicker from 'react-widgets/DatePicker';
 import 'react-widgets/styles.css';
@@ -115,31 +114,32 @@ class StaffComponent extends Component {
 
   handleSubmitInput(values) {
     this.toggleModal();
-    const duplicateStaff = { ...values };
+    alert(JSON.stringify(values));
+    // const duplicateStaff = { ...values };
 
-    let list = [...this.state.listStaffs];
-    if (this.state.newStaffLocal) {
-      this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
-    }
+    // let list = [...this.state.listStaffs];
+    // if (this.state.newStaffLocal) {
+    //   this.state.newStaffLocal.forEach((item) => (list = [...list, item]));
+    // }
 
-    let idStaff = list[list.length - 1].id;
-    duplicateStaff.id = idStaff + 1;
-    let staffAdded = [];
-    staffAdded.push(duplicateStaff);
-    list.push(staffAdded[0]);
+    // let idStaff = list[list.length - 1].id;
+    // duplicateStaff.id = idStaff + 1;
+    // let staffAdded = [];
+    // staffAdded.push(duplicateStaff);
+    // list.push(staffAdded[0]);
 
-    this.setState({
-      listStaffs: [...list],
-    });
+    // this.setState({
+    //   listStaffs: [...list],
+    // });
 
-    const localSavedStaff = localStorage.getItem('newStaff');
-    if (localSavedStaff) {
-      const itemParse = JSON.parse(localSavedStaff);
-      itemParse.push(duplicateStaff);
-      localStorage.setItem('newStaff', JSON.stringify(itemParse));
-    } else {
-      localStorage.setItem('newStaff', JSON.stringify(staffAdded));
-    }
+    // const localSavedStaff = localStorage.getItem('newStaff');
+    // if (localSavedStaff) {
+    //   const itemParse = JSON.parse(localSavedStaff);
+    //   itemParse.push(duplicateStaff);
+    //   localStorage.setItem('newStaff', JSON.stringify(itemParse));
+    // } else {
+    //   localStorage.setItem('newStaff', JSON.stringify(staffAdded));
+    // }
   }
 
   render() {

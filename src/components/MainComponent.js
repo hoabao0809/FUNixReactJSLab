@@ -11,8 +11,8 @@ import { fetchStaffs, fetchDepartments } from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
   return {
-    staffs: state.staffs,
-    departments: state.departments,
+    staffs: state.staffs.staffs,
+    departments: state.departments.departments,
   };
 };
 
@@ -39,8 +39,8 @@ class Main extends Component {
       //   newStaff.forEach((item) => staffListWithLoStorage.push(item));
       // }
 
-      let listStaffs = [...this.props.staffs.staffs];
-      let listDeparts = [...this.props.departments.departments];
+      let listStaffs = [...this.props.staffs];
+      let listDeparts = [...this.props.departments];
       const staffSelected = listStaffs.filter(
         (staff) => staff.id === parseInt(match.params.staffId, 10)
       )[0];
@@ -66,9 +66,7 @@ class Main extends Component {
           <Route
             exact
             path="/staff"
-            component={() => (
-              <StaffComponent staffs={this.props.staffs.staffs} />
-            )}
+            component={() => <StaffComponent staffs={this.props.staffs} />}
           />
           <Route path="/staff/:staffId" component={StaffWithId} />
           <Route
