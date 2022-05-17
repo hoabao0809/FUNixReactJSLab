@@ -7,7 +7,7 @@ import StaffDetail from './StaffDetailComponent';
 import DepaComponent from './DepaComponent';
 import SalaryComponent from './SalaryComponent';
 import { connect } from 'react-redux';
-import { fetchStaffs } from '../redux/ActionCreators';
+import { fetchStaffs, fetchDepartments } from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
   return {
@@ -20,30 +20,40 @@ const mapDispatchToProps = (dispatch) => ({
   fetchStaffs: () => {
     dispatch(fetchStaffs());
   },
+  fetchDepartments: () => {
+    dispatch(fetchDepartments());
+  },
 });
 
 class Main extends Component {
   componentDidMount() {
     this.props.fetchStaffs();
+    this.props.fetchDepartments();
   }
   render() {
     const StaffWithId = ({ match }) => {
-      const newStaff = JSON.parse(localStorage.getItem('newStaff'));
+      // const newStaff = JSON.parse(localStorage.getItem('newStaff'));
 
-      let staffListWithLoStorage = [...this.props.staffs];
-      if (newStaff) {
-        newStaff.forEach((item) => staffListWithLoStorage.push(item));
-      }
+      // let staffListWithLoStorage = [...this.props.staffs];
+      // if (newStaff) {
+      //   newStaff.forEach((item) => staffListWithLoStorage.push(item));
+      // }
+
+      let listStaffs = [...this.props.staffs.staffs];
+      let listDeparts = [...this.props.departments.departments];
+      const staffSelected = listStaffs.filter(
+        (staff) => staff.id === parseInt(match.params.staffId, 10)
+      )[0];
 
       return (
         <div className="mt-3 mb-5">
           <StaffDetail
-            staff={
-              staffListWithLoStorage.filter(
-                (staff) => staff.id === parseInt(match.params.staffId, 10)
+            staff={staffSelected}
+            department={
+              listDeparts.filter(
+                (item) => item.id === staffSelected.departmentId
               )[0]
             }
-            departments={this.props.departments}
           />
         </div>
       );
