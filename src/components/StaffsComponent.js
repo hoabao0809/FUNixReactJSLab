@@ -76,7 +76,6 @@ class StaffComponent extends Component {
     super(props);
 
     this.state = {
-      // listStaffs: STAFFS,
       keyword: '',
       searchKey: '',
       isModalOpen: false,
@@ -122,9 +121,11 @@ class StaffComponent extends Component {
       parseInt(values.salaryScale) * 3000000 +
       parseInt(values.overTime) * 200000;
 
+    const lastStaffArray = this.props.staffs[this.props.staffs.length - 1];
+
     this.props.postStaff({
       ...values,
-      id: this.props.staffs.length,
+      id: lastStaffArray.id + 1,
       departmentId: department.id,
       image: '/assets/images/alberto.png',
       salary,

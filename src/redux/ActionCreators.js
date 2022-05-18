@@ -47,6 +47,7 @@ export const deleteStaff = (staffId) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(removeStaff(staffId));
+
         // window.history.replaceState('', '', '/staff');
         // window.location = '/#'; // Redirect to Staff Page after deleting staff
       }

@@ -10,3 +10,9 @@
 
 - Cài đặt và cấu hình được react-redux, lấy dữ liệu từ store sử dụng trong Main Component
 - Thêm thành công nhân viên mới và chuẩn hoá dữ liệu (validate) form sử dụng react-redux-form.
+
+# Problems and solutions:
+
+- Del staff - redirect to Staff Page:
+  check param return matched item ? return detail staff : used "props.history.push" to redirect
+  - useHistory / window.location = 'path' / window.history
