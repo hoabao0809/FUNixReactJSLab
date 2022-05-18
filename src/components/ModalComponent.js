@@ -14,7 +14,7 @@ import { Control, Errors, LocalForm } from 'react-redux-form';
 import DatePicker from 'react-widgets/DatePicker';
 import 'react-widgets/styles.css';
 import { connect } from 'react-redux';
-import { toggleModal } from '../redux/ActionCreators';
+import { toggleModal, postStaff } from '../redux/ActionCreators';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -22,6 +22,8 @@ const minLength = (len) => (val) => val && val.length >= len;
 
 const mapStateToProps = (state) => {
   return {
+    staffs: state.staffs.staffs,
+    departments: state.departments.departments,
     isModalOpen: state.isModalOpen.isModalOpen,
   };
 };
@@ -29,6 +31,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => {
     dispatch(toggleModal());
+  },
+  postStaff: (staff) => {
+    dispatch(postStaff(staff));
   },
 });
 
@@ -54,10 +59,45 @@ class ModalForm extends Component {
     );
   };
 
+  handleSubmitInput(values) {
+    this.props.toggleModal();
+
+    const department = this.props.departments.filter(
+      (item) => item.name === values.department
+    )[0];
+
+    const salary =
+      parseInt(values.salaryScale) * 3000000 +
+      parseInt(values.overTime) * 200000;
+
+    const lastStaffArray = this.props.staffs[this.props.staffs.length - 1];
+
+    switch (this.props.type) {
+      case 'addStaff':
+        this.props.postStaff({
+          ...values,
+          id: lastStaffArray.id + 1,
+          departmentId: department.id,
+          image: '/assets/images/alberto.png',
+          salary,
+        });
+        break;
+
+      case 'updateStaff':
+        alert('Cập nhật nhân viên');
+        break;
+
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <Modal isOpen={this.props.isModalOpen} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Thêm nhân viên</ModalHeader>
+        <ModalHeader toggle={this.toggle}>
+          {this.props.type === 'addStaff' ? 'Thêm' : 'Cập nhật'} nhân viên
+        </ModalHeader>
         <ModalBody>
           <LocalForm onSubmit={(values) => this.handleSubmitInput(values)}>
             <Row className="form-group">
@@ -199,7 +239,9 @@ class ModalForm extends Component {
               </Col>
             </Row>
             <ModalFooter>
-              <Button type="submit">Thêm</Button>
+              <Button type="submit">
+                {this.props.type === 'addStaff' ? 'Thêm' : 'Cập Nhật'}
+              </Button>
               <Button type="button" onClick={this.toggle}>
                 Cancel
               </Button>

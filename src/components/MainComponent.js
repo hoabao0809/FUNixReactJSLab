@@ -9,7 +9,6 @@ import SalaryComponent from './SalaryComponent';
 import { connect } from 'react-redux';
 import {
   fetchStaffs,
-  postStaff,
   fetchDepartments,
   deleteStaff,
   toggleModal,
@@ -28,9 +27,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   fetchDepartments: () => {
     dispatch(fetchDepartments());
-  },
-  postStaff: (staff) => {
-    dispatch(postStaff(staff));
   },
   deleteStaff: (id) => {
     dispatch(deleteStaff(id));
@@ -84,7 +80,6 @@ class Main extends Component {
             component={() => (
               <StaffComponent
                 staffs={this.props.staffs}
-                postStaff={this.props.postStaff}
                 departments={this.props.departments}
                 toggleModal={this.props.toggleModal}
               />
