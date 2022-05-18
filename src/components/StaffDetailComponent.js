@@ -52,6 +52,7 @@ const StaffDetail = (props) => {
               staff={props.staff}
               department={props.department}
               deleteStaff={props.deleteStaff}
+              generatePath={props.generatePath}
             />
           </div>
         </div>

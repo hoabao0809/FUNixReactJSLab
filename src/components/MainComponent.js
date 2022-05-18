@@ -42,12 +42,19 @@ class Main extends Component {
     this.props.fetchDepartments();
   }
   render() {
-    const StaffWithId = ({ match }) => {
+    const StaffWithId = ({ match, history }) => {
+      console.log(history);
       let listStaffs = [...this.props.staffs];
       let listDeparts = [...this.props.departments];
+
       const staffSelected = listStaffs.filter(
         (staff) => staff.id === parseInt(match.params.staffId, 10)
       )[0];
+
+      // Xử lý sau khi xóa staff => redirect về trang staff
+      if (!staffSelected) {
+        history.push('/staff');
+      }
 
       return (
         <div className="mt-3 mb-5">
