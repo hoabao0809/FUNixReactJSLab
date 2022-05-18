@@ -7,22 +7,23 @@ import {
   Input,
   Button,
   FormGroup,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Label,
+  // Modal,
+  // ModalHeader,
+  // ModalBody,
+  // ModalFooter,
+  // Label,
   Col,
-  Row,
+  // Row,
 } from 'reactstrap';
 
-import { Control, Errors, LocalForm } from 'react-redux-form';
+// import { Control, Errors, LocalForm } from 'react-redux-form';
 import DatePicker from 'react-widgets/DatePicker';
 import 'react-widgets/styles.css';
+import ModalForm from './ModalComponent';
 
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !val || val.length <= len;
-const minLength = (len) => (val) => val && val.length >= len;
+// const required = (val) => val && val.length;
+// const maxLength = (len) => (val) => !val || val.length <= len;
+// const minLength = (len) => (val) => val && val.length >= len;
 
 const StaffList = ({ staffs, keyword, newStaff }) => {
   let staffList = [...staffs];
@@ -78,30 +79,30 @@ class StaffComponent extends Component {
     this.state = {
       keyword: '',
       searchKey: '',
-      isModalOpen: false,
+      // isModalOpen: false,
     };
 
-    this.toggleModal = this.toggleModal.bind(this);
+    // this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
     this.handleSubmitInput = this.handleSubmitInput.bind(this);
   }
 
-  toggleModal() {
-    this.setState({
-      isModalOpen: !this.state.isModalOpen,
-    });
-  }
+  // toggleModal() {
+  //   this.setState({
+  //     isModalOpen: !this.state.isModalOpen,
+  //   });
+  // }
 
-  renderDatePicker = (props) => {
-    return (
-      <React.Fragment>
-        <DatePicker placeholder="mm/dd/yy" {...props} />
-        {(props.value === null || props.value === undefined) && (
-          <div className="text-danger">Yêu cầu nhập</div>
-        )}
-      </React.Fragment>
-    );
-  };
+  // renderDatePicker = (props) => {
+  //   return (
+  //     <React.Fragment>
+  //       <DatePicker placeholder="mm/dd/yy" {...props} />
+  //       {(props.value === null || props.value === undefined) && (
+  //         <div className="text-danger">Yêu cầu nhập</div>
+  //       )}
+  //     </React.Fragment>
+  //   );
+  // };
 
   handleSubmitSearch(e) {
     e.preventDefault();
@@ -111,7 +112,7 @@ class StaffComponent extends Component {
   }
 
   handleSubmitInput(values) {
-    this.toggleModal();
+    this.props.toggleModal();
 
     const department = this.props.departments.filter(
       (item) => item.name === values.department
@@ -141,7 +142,7 @@ class StaffComponent extends Component {
               <Col md={6} className="d-flex justify-content-between">
                 <h3>Nhân viên</h3>
                 <div className="btn__add" style={{ width: '50%' }}>
-                  <Button onClick={this.toggleModal}>
+                  <Button onClick={this.props.toggleModal}>
                     <span className="fa fa-plus fa-lg"></span>
                   </Button>
                 </div>
@@ -184,8 +185,10 @@ class StaffComponent extends Component {
           </div>
         </div>
 
+        <ModalForm />
+
         {/* ========== Modal Add Staff ============== */}
-        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+        {/* <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>
             <LocalForm onSubmit={(values) => this.handleSubmitInput(values)}>
@@ -216,9 +219,9 @@ class StaffComponent extends Component {
                     }}
                   />
                 </Col>
-              </Row>
-              {/* https://davidkpiano.github.io/react-redux-form/docs/guides/custom-controls.html */}
-              <Row className="form-group">
+              </Row> */}
+        {/* https://davidkpiano.github.io/react-redux-form/docs/guides/custom-controls.html */}
+        {/* <Row className="form-group">
                 <Label htmlFor=".doB" md={4}>
                   Ngày sinh
                 </Label>
@@ -335,7 +338,7 @@ class StaffComponent extends Component {
               </ModalFooter>
             </LocalForm>
           </ModalBody>
-        </Modal>
+        </Modal> */}
       </React.Fragment>
     );
   }

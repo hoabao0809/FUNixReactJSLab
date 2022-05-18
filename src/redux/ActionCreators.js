@@ -83,3 +83,7 @@ export const departsFailed = (errmess) => ({
   type: ActionTypes.DEPARTMENTS_FAILED,
   payload: errmess,
 });
+
+export const toggleModal = () => ({
+  type: ActionTypes.TOGGLE_MODAL,
+});

@@ -12,6 +12,7 @@ import {
   postStaff,
   fetchDepartments,
   deleteStaff,
+  toggleModal,
 } from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
@@ -34,6 +35,9 @@ const mapDispatchToProps = (dispatch) => ({
   deleteStaff: (id) => {
     dispatch(deleteStaff(id));
   },
+  toggleModal: () => {
+    dispatch(toggleModal());
+  },
 });
 
 class Main extends Component {
@@ -43,7 +47,6 @@ class Main extends Component {
   }
   render() {
     const StaffWithId = ({ match, history }) => {
-      console.log(history);
       let listStaffs = [...this.props.staffs];
       let listDeparts = [...this.props.departments];
 
@@ -83,6 +86,7 @@ class Main extends Component {
                 staffs={this.props.staffs}
                 postStaff={this.props.postStaff}
                 departments={this.props.departments}
+                toggleModal={this.props.toggleModal}
               />
             )}
           />

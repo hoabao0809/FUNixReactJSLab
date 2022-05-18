@@ -28,6 +28,7 @@ function RenderStaffDetail({ staff, department, deleteStaff }) {
         >
           Xóa
         </Button>
+        <Button style={{ marginLeft: '10px' }}>Cập nhật</Button>
       </div>
     </div>
   );
