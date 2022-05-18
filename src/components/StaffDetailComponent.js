@@ -4,9 +4,10 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import Link from 'react-router-dom/Link';
 import '../css/StaffDetail.css';
 import { Button } from 'reactstrap';
+import ModalForm from './ModalComponent';
 
 // Component render 1 staff detail item
-function RenderStaffDetail({ staff, department, deleteStaff }) {
+function RenderStaffDetail({ staff, department, deleteStaff, toggleModal }) {
   return (
     <div className="row staff_detail">
       <div className="staff__left col-12 col-md-4 col-lg-3">
@@ -28,7 +29,9 @@ function RenderStaffDetail({ staff, department, deleteStaff }) {
         >
           Xóa
         </Button>
-        <Button style={{ marginLeft: '10px' }}>Cập nhật</Button>
+        <Button style={{ marginLeft: '10px' }} onClick={() => toggleModal()}>
+          Cập nhật
+        </Button>
       </div>
     </div>
   );
@@ -38,26 +41,33 @@ function RenderStaffDetail({ staff, department, deleteStaff }) {
 const StaffDetail = (props) => {
   if (props.staff != null) {
     return (
-      <div className="container-fluid">
-        <div className="container">
-          <div className="row">
-            <Breadcrumb>
-              <BreadcrumbItem>
-                <Link to="/staff">Nhân Viên</Link>
-              </BreadcrumbItem>
-              <BreadcrumbItem active>{props.staff.name}</BreadcrumbItem>
-            </Breadcrumb>
-          </div>
-          <div>
-            <RenderStaffDetail
-              staff={props.staff}
-              department={props.department}
-              deleteStaff={props.deleteStaff}
-              generatePath={props.generatePath}
-            />
+      <>
+        <div className="container-fluid">
+          <div className="container">
+            <div className="row">
+              <Breadcrumb>
+                <BreadcrumbItem>
+                  <Link to="/staff">Nhân Viên</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem active>{props.staff.name}</BreadcrumbItem>
+              </Breadcrumb>
+            </div>
+            <div>
+              <RenderStaffDetail
+                staff={props.staff}
+                department={props.department}
+                deleteStaff={props.deleteStaff}
+                toggleModal={props.toggleModal}
+              />
+            </div>
           </div>
         </div>
-      </div>
+        <ModalForm
+          type="updateStaff"
+          staff={props.staff}
+          department={props.department}
+        />
+      </>
     );
   } else {
     return <div></div>;

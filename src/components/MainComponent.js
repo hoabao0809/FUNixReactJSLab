@@ -65,6 +65,7 @@ class Main extends Component {
               )[0]
             }
             deleteStaff={this.props.deleteStaff}
+            toggleModal={this.props.toggleModal}
           />
         </div>
       );

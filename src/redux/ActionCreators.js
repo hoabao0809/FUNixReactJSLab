@@ -41,6 +41,21 @@ export const postStaff = (staff) => (dispatch) => {
     });
 };
 
+// export const updateStaff = (id, staff) => (dispatch) => {
+//   apiServices
+//     .update('staffs', staff)
+//     .then((response) => {
+//       if (response.ok) {
+//         dispatch(addStaff(staff));
+//         console.log(response.statusText);
+//       }
+//     })
+//     .catch((error) => {
+//       console.log('Post staff', error.message);
+//       alert('Your staff could not be posted\nError: ' + error.message);
+//     });
+// };
+
 export const deleteStaff = (staffId) => (dispatch) => {
   apiServices
     .del(staffId)

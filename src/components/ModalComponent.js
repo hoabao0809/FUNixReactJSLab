@@ -15,6 +15,7 @@ import DatePicker from 'react-widgets/DatePicker';
 import 'react-widgets/styles.css';
 import { connect } from 'react-redux';
 import { toggleModal, postStaff } from '../redux/ActionCreators';
+import dateFormat from 'dateformat';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -84,7 +85,7 @@ class ModalForm extends Component {
         break;
 
       case 'updateStaff':
-        alert('Cập nhật nhân viên');
+        console.log(values);
         break;
 
       default:
@@ -115,6 +116,8 @@ class ModalForm extends Component {
                     minLength: minLength(2),
                     maxLength: maxLength(30),
                   }}
+                  defaultValue={this.props.staff ? this.props.staff.name : ''}
+                  disabled={this.props.staff ? true : false}
                 />
                 <Errors
                   className="text-danger"
@@ -142,6 +145,11 @@ class ModalForm extends Component {
                   mapProps={{
                     value: (props) => props.viewValue,
                   }}
+                  placeholder={
+                    this.props.staff
+                      ? dateFormat(this.props.staff.doB, 'dd/mm/yyyy')
+                      : ''
+                  }
                 />
                 <Errors
                   className="text-danger"
@@ -166,6 +174,11 @@ class ModalForm extends Component {
                   mapProps={{
                     value: (props) => props.viewValue,
                   }}
+                  placeholder={
+                    this.props.staff
+                      ? dateFormat(this.props.staff.startDate, 'dd/mm/yyyy')
+                      : ''
+                  }
                 />
               </Col>
             </Row>
@@ -178,8 +191,13 @@ class ModalForm extends Component {
                   model=".department"
                   name="departmen"
                   className="form-control"
-                  defaultValue="HR"
+                  defaultValue={
+                    this.props.department ? this.props.department.name : 'HR'
+                  }
                 >
+                  <option selected>
+                    {this.props.department ? this.props.department.name : 'HR'}
+                  </option>
                   <option>HR</option>
                   <option>Marketing</option>
                   <option>IT</option>
@@ -199,7 +217,9 @@ class ModalForm extends Component {
                   id="salaryScale"
                   className="form-control"
                   name="salaryScale"
-                  defaultValue="1"
+                  defaultValue={
+                    this.props.staff ? this.props.staff.salaryScale : '1'
+                  }
                   placeholder="1.0 -> 
                 3.0"
                 />
@@ -217,7 +237,9 @@ class ModalForm extends Component {
                   name="annualLeave"
                   className="form-control"
                   model=".annualLeave"
-                  defaultValue="0"
+                  defaultValue={
+                    this.props.staff ? this.props.staff.annualLeave : '0'
+                  }
                   placeholder="1.0"
                 />
               </Col>
@@ -234,7 +256,9 @@ class ModalForm extends Component {
                   id="overTime"
                   name="overTime"
                   model=".overTime"
-                  defaultValue="0"
+                  defaultValue={
+                    this.props.staff ? this.props.staff.overTime : '0'
+                  }
                 />
               </Col>
             </Row>
