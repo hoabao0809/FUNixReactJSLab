@@ -39,24 +39,26 @@ function RenderByCondition({ staffs, sortBy }) {
 
 // Component render 1 salary item
 function RenderSalary({ staff }) {
-  const salary =
-    parseInt(staff.salaryScale) * 3000000 + parseInt(staff.overTime) * 200000;
   return (
     <div className="col-12 col-md-6 col-lg-4">
       <div className="salary__item">
         <div className="salary__header">
           <div className="salary__img">
-            <img src={logoStaff} alt={staff.id} />
+            <Link to={`/staff/${staff.id}`}>
+              <img src={logoStaff} alt={staff.id} />
+            </Link>
           </div>
           <div className="salary__name">
-            <h4>{staff.name}</h4>
+            <Link to={`/staff/${staff.id}`}>
+              <h4>{staff.name}</h4>
+            </Link>
             <p>Mã nhân viên: {staff.id}</p>
             <p>Hệ số lương: {staff.salaryScale}</p>
             <p>Số ngày làm thêm: {staff.overTime}</p>
           </div>
         </div>
 
-        <p>Lương: {salary}</p>
+        <p>Lương: {staff.salary}</p>
       </div>
     </div>
   );

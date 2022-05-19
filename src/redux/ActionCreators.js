@@ -119,6 +119,26 @@ export const addStaffsDepaFailed = (errmess) => ({
   payload: errmess,
 });
 
+// ===============STAFFS===============
+export const fetchSalaries = () => (dispatch) => {
+  // dispatch(staffLoading())
+  apiServices
+    .get('staffsSalary')
+    .then((response) => response.json())
+    .then((staffsSalary) => dispatch(addSalaries(staffsSalary)))
+    .catch((error) => dispatch(salariesFailed(error.message)));
+};
+
+export const addSalaries = (staffsSalary) => ({
+  type: ActionTypes.ADD_SALARIES,
+  payload: staffsSalary,
+});
+
+export const salariesFailed = (errmess) => ({
+  type: ActionTypes.SALARIES_FAILED,
+  payload: errmess,
+});
+
 // ===============Modal===============
 export const toggleModal = () => ({
   type: ActionTypes.TOGGLE_MODAL,

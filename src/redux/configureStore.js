@@ -5,6 +5,7 @@ import { Staffs } from './staffs';
 import { Departments } from './departments';
 import { ModalForm } from './modal';
 import { StaffsDepa } from './staffsDepa';
+import { Salaries } from './salaries';
 
 export const ConfigureStore = () => {
   const store = createStore(
@@ -13,6 +14,7 @@ export const ConfigureStore = () => {
       departments: Departments,
       isModalOpen: ModalForm,
       staffsDepa: StaffsDepa,
+      staffsSalary: Salaries,
     }),
     applyMiddleware(thunk, logger)
   );

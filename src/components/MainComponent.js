@@ -12,6 +12,7 @@ import {
   fetchDepartments,
   deleteStaff,
   toggleModal,
+  fetchSalaries,
 } from '../redux/ActionCreators';
 import DepaWithIdComponent from './DepaWithIdComponent';
 
@@ -19,6 +20,7 @@ const mapStateToProps = (state) => {
   return {
     staffs: state.staffs.staffs,
     departments: state.departments.departments,
+    staffsSalary: state.staffsSalary.staffsSalary,
   };
 };
 
@@ -35,12 +37,16 @@ const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => {
     dispatch(toggleModal());
   },
+  fetchSalaries: () => {
+    dispatch(fetchSalaries());
+  },
 });
 
 class Main extends Component {
   componentDidMount() {
     this.props.fetchStaffs();
     this.props.fetchDepartments();
+    this.props.fetchSalaries();
   }
   render() {
     const StaffWithId = ({ match, history }) => {
@@ -114,7 +120,9 @@ class Main extends Component {
           <Route path="/department/:departId" component={DepartWithId} />
           <Route
             path="/salary"
-            component={() => <SalaryComponent staffs={this.props.staffs} />}
+            component={() => (
+              <SalaryComponent staffs={this.props.staffsSalary} />
+            )}
           />
           <Redirect to="/staff" />
         </Switch>
