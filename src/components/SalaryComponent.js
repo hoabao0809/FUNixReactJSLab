@@ -4,11 +4,6 @@ import { useState } from 'react';
 import logoStaff from '../assets/images/alberto.png';
 import '../css/SalaryComponent.css';
 
-/**
- * @description Component render điều kiện lọc
- * Nếu props sorby không có (user chưa chọn select) thì render danh sách như bình thường
- * Nếu người dùng chọn sắp xếp => dùng switch case check điều kiện và render danh sách mới tương ứng
- */
 function RenderByCondition({ staffs, sortBy }) {
   let staffsArr = [...staffs];
 

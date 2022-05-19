@@ -13,23 +13,11 @@ import {
 import 'react-widgets/styles.css';
 import ModalForm from './ModalComponent';
 
-const StaffList = ({ staffs, keyword, newStaff }) => {
-  let staffList = [...staffs];
-
-  if (newStaff) {
-    newStaff.forEach((item) => {
-      staffList = [...staffList, item];
-    });
-  }
-  // Lọc các item trùng nhau
-  staffList = [...new Set(staffList)];
-
+const StaffList = ({ staffs, keyword }) => {
   if (!keyword) {
-    return staffList.map((staff) => (
-      <RenderStaff key={staff.id} staff={staff} />
-    ));
+    return staffs.map((staff) => <RenderStaff key={staff.id} staff={staff} />);
   }
-  const searchArray = staffList.filter(
+  const searchArray = staffs.filter(
     (item) =>
       item.name.toLowerCase().indexOf(keyword.toLowerCase().trim()) !== -1
   );
