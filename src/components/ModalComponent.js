@@ -90,17 +90,10 @@ class ModalForm extends Component {
         break;
 
       case 'updateStaff':
-        const { annualLeave, doB, name, overTime, salaryScale, startDate } =
-          values;
         const updatedStaff = {
           ...this.props.staff,
-          annualLeave,
+          ...values,
           departmentId: departmentItem.id,
-          doB,
-          name,
-          overTime,
-          salaryScale,
-          startDate,
           image: '/assets/images/alberto.png',
           salary,
         };
