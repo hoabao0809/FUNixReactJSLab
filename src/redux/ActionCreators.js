@@ -121,7 +121,6 @@ export const addStaffsDepaFailed = (errmess) => ({
 
 // ===============STAFFS===============
 export const fetchSalaries = () => (dispatch) => {
-  // dispatch(staffLoading())
   apiServices
     .get('staffsSalary')
     .then((response) => response.json())
