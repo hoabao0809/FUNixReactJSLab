@@ -88,19 +88,12 @@ class ModalForm extends Component {
         break;
 
       case 'updateStaff':
-        const {
-          annualLeave,
-          department,
-          doB,
-          name,
-          overTime,
-          salaryScale,
-          startDate,
-        } = values;
+        const { annualLeave, doB, name, overTime, salaryScale, startDate } =
+          values;
         const updatedStaff = {
           ...this.props.staff,
           annualLeave,
-          departmentId: department,
+          departmentId: departmentItem.id,
           doB,
           name,
           overTime,
@@ -110,7 +103,8 @@ class ModalForm extends Component {
           salary,
         };
 
-        this.props.updateStaff(this.props.staff.id, updatedStaff);
+        this.props.updateStaff(updatedStaff);
+
         break;
 
       default:
@@ -221,6 +215,7 @@ class ModalForm extends Component {
                   }
                 >
                   <option>HR</option>
+                  <option>Sale</option>
                   <option>Marketing</option>
                   <option>IT</option>
                   <option>Finance</option>

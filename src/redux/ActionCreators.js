@@ -32,7 +32,7 @@ export const postStaff = (staff) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(addStaff(staff));
-        console.log(response.statusText);
+        dispatch(fetchDepartments());
       }
     })
     .catch((error) => {
@@ -41,12 +41,13 @@ export const postStaff = (staff) => (dispatch) => {
     });
 };
 
-export const updateStaff = (id, staff) => (dispatch) => {
+export const updateStaff = (staff) => (dispatch) => {
   apiServices
-    .update(id, staff)
+    .update(staff)
     .then((response) => {
       if (response.ok) {
-        dispatch(addStaff(staff));
+        dispatch(fetchStaffs());
+
         console.log(response.statusText);
       }
     })

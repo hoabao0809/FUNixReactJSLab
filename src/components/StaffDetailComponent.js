@@ -8,6 +8,7 @@ import ModalForm from './ModalComponent';
 
 // Component render 1 staff detail item
 function RenderStaffDetail({ staff, department, deleteStaff, toggleModal }) {
+  console.log(department);
   return (
     <div className="row staff_detail">
       <div className="staff__left col-12 col-md-4 col-lg-3">
@@ -40,6 +41,7 @@ function RenderStaffDetail({ staff, department, deleteStaff, toggleModal }) {
 // Component StaffDetail
 const StaffDetail = (props) => {
   if (props.staff != null) {
+    console.log(props.staff);
     return (
       <>
         <div className="container-fluid">

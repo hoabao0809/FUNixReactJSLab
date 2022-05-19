@@ -47,9 +47,9 @@ export const post = (param, data) => {
   );
 };
 
-export const update = (staffId, data) => {
-  return fetch(baseUrl + 'staffs/' + staffId, {
-    method: 'PUT',
+export const update = (data) => {
+  return fetch(baseUrl + 'staffs', {
+    method: 'PATCH',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
