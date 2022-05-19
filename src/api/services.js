@@ -47,6 +47,34 @@ export const post = (param, data) => {
   );
 };
 
+export const update = (staffId, data) => {
+  return fetch(baseUrl + 'staffs/' + staffId, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'same-origin',
+    referrerPolicy: 'origin-when-cross-origin',
+  }).then(
+    (response) => {
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error(
+          'Error' + response.status + ': ' + response.statusText
+        );
+        error.response = response;
+        throw error;
+      }
+    },
+    (error) => {
+      var errmess = new Error(error.message);
+      throw errmess;
+    }
+  );
+};
+
 export const del = (paramId) => {
   return fetch(baseUrl + 'staffs/' + paramId, {
     method: 'DELETE',

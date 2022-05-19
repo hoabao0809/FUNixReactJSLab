@@ -14,7 +14,7 @@ import { Control, Errors, LocalForm } from 'react-redux-form';
 import DatePicker from 'react-widgets/DatePicker';
 import 'react-widgets/styles.css';
 import { connect } from 'react-redux';
-import { toggleModal, postStaff } from '../redux/ActionCreators';
+import { toggleModal, postStaff, updateStaff } from '../redux/ActionCreators';
 import dateFormat from 'dateformat';
 
 const required = (val) => val && val.length;
@@ -35,6 +35,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   postStaff: (staff) => {
     dispatch(postStaff(staff));
+  },
+  updateStaff: (id, staff) => {
+    dispatch(updateStaff(id, staff));
   },
 });
 
@@ -63,7 +66,7 @@ class ModalForm extends Component {
   handleSubmitInput(values) {
     this.props.toggleModal();
 
-    const department = this.props.departments.filter(
+    const departmentItem = this.props.departments.filter(
       (item) => item.name === values.department
     )[0];
 
@@ -78,14 +81,37 @@ class ModalForm extends Component {
         this.props.postStaff({
           ...values,
           id: lastStaffArray.id + 1,
-          departmentId: department.id,
+          departmentId: departmentItem.id,
           image: '/assets/images/alberto.png',
           salary,
         });
         break;
 
       case 'updateStaff':
-        console.log(values);
+        const {
+          annualLeave,
+          department,
+          doB,
+          name,
+          overTime,
+          salaryScale,
+          startDate,
+        } = values;
+        const updatedStaff = {
+          ...this.props.staff,
+          annualLeave,
+          departmentId: department,
+          doB,
+          name,
+          overTime,
+          salaryScale,
+          startDate,
+          image: '/assets/images/alberto.png',
+          salary,
+        };
+
+        this.props.updateStaff(this.props.staff.id, updatedStaff);
+
         break;
 
       default:
@@ -195,9 +221,6 @@ class ModalForm extends Component {
                     this.props.department ? this.props.department.name : 'HR'
                   }
                 >
-                  <option selected>
-                    {this.props.department ? this.props.department.name : 'HR'}
-                  </option>
                   <option>HR</option>
                   <option>Marketing</option>
                   <option>IT</option>
