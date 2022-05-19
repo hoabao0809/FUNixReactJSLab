@@ -34,6 +34,7 @@ export const postStaff = (staff) => (dispatch) => {
         Swal.fire('Success!', '', 'success');
         dispatch(addStaff(staff));
         dispatch(fetchDepartments());
+        dispatch(fetchSalaries());
       }
     })
     .catch((error) => {
@@ -48,9 +49,8 @@ export const updateStaff = (staff) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(fetchStaffs());
+        dispatch(fetchSalaries());
         Swal.fire('Success!', '', 'success');
-
-        console.log(response.statusText);
       }
     })
     .catch((error) => {
@@ -65,6 +65,8 @@ export const deleteStaff = (staffId) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(removeStaff(staffId));
+        dispatch(fetchDepartments());
+        dispatch(fetchSalaries());
         Swal.fire('Success!', '', 'success');
         // window.history.replaceState('', '', '/staff');
         // window.location = '/#'; // Redirect to Staff Page after deleting staff

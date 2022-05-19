@@ -22,9 +22,9 @@ function RenderByCondition({ staffs, sortBy }) {
       ));
 
     case 'salaryScale':
-      // Sắp xếp Hệ sống lương theo thứ tự thấp -> cao
+      // Sắp xếp Hệ số lương theo thứ tự thấp -> cao
       staffsArr = staffsArr.sort((a, b) => {
-        return a.salaryScale - b.salaryScale;
+        return a.salary - b.salary;
       });
 
       return staffsArr.map((item) => (
