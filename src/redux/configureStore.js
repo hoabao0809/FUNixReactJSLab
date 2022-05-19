@@ -4,6 +4,7 @@ import logger from 'redux-logger';
 import { Staffs } from './staffs';
 import { Departments } from './departments';
 import { ModalForm } from './modal';
+import { StaffsDepa } from './staffsDepa';
 
 export const ConfigureStore = () => {
   const store = createStore(
@@ -11,6 +12,7 @@ export const ConfigureStore = () => {
       staffs: Staffs,
       departments: Departments,
       isModalOpen: ModalForm,
+      staffsDepa: StaffsDepa,
     }),
     applyMiddleware(thunk, logger)
   );

@@ -13,6 +13,7 @@ import {
   deleteStaff,
   toggleModal,
 } from '../redux/ActionCreators';
+import DepaWithIdComponent from './DepaWithIdComponent';
 
 const mapStateToProps = (state) => {
   return {
@@ -71,6 +72,22 @@ class Main extends Component {
       );
     };
 
+    const DepartWithId = ({ match }) => {
+      const departId = match.params.departId;
+
+      return (
+        <div className="mt-3 mb-5">
+          <DepaWithIdComponent
+            departId={departId}
+            department={
+              this.props.departments.filter((item) => item.id === departId)[0]
+            }
+          />
+          ;
+        </div>
+      );
+    };
+
     return (
       <React.Fragment>
         <Header />;
@@ -89,10 +106,12 @@ class Main extends Component {
           <Route path="/staff/:staffId" component={StaffWithId} />
           <Route
             path="/department"
+            exact
             component={() => (
               <DepaComponent departments={this.props.departments} />
             )}
           />
+          <Route path="/department/:departId" component={DepartWithId} />
           <Route
             path="/salary"
             component={() => <SalaryComponent staffs={this.props.staffs} />}

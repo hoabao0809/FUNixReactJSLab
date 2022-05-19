@@ -1,9 +1,9 @@
 import * as ActionTypes from './ActionTypes';
 import * as apiServices from '../api/services';
 
+// ===============STAFFS===============
 export const fetchStaffs = () => (dispatch) => {
   // dispatch(staffLoading())
-
   apiServices
     .get('staffs')
     .then((response) => response.json())
@@ -62,7 +62,6 @@ export const deleteStaff = (staffId) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(removeStaff(staffId));
-
         // window.history.replaceState('', '', '/staff');
         // window.location = '/#'; // Redirect to Staff Page after deleting staff
       }
@@ -78,7 +77,7 @@ export const removeStaff = (staffId) => ({
   payload: staffId,
 });
 
-// Departments
+// ===============Departments===============
 export const fetchDepartments = () => (dispatch) => {
   apiServices
     .get('departments')
@@ -99,6 +98,27 @@ export const departsFailed = (errmess) => ({
   payload: errmess,
 });
 
+export const getStaffsDepa = (id) => (dispatch) => {
+  apiServices
+    .get('departments/' + id)
+    .then((response) => response.json())
+    .then((staffs) => {
+      dispatch(addStaffsDepa(staffs));
+    })
+    .catch((error) => dispatch(addStaffsDepaFailed(error.message)));
+};
+
+export const addStaffsDepa = (staffs) => ({
+  type: ActionTypes.GET_STAFFSDEPA,
+  payload: staffs,
+});
+
+export const addStaffsDepaFailed = (errmess) => ({
+  type: ActionTypes.STAFFSDEPA_FAILED,
+  payload: errmess,
+});
+
+// ===============Modal===============
 export const toggleModal = () => ({
   type: ActionTypes.TOGGLE_MODAL,
 });

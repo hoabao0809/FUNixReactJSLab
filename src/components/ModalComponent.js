@@ -111,7 +111,6 @@ class ModalForm extends Component {
         };
 
         this.props.updateStaff(this.props.staff.id, updatedStaff);
-
         break;
 
       default:
