@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import logoStaff from '../assets/images/alberto.png';
 import '../css/SalaryComponent.css';
+import { FadeTransform } from 'react-animation-components';
 
 function RenderByCondition({ staffs, sortBy }) {
   let staffsArr = [...staffs];
@@ -84,10 +85,16 @@ export default function SalaryComponent({ staffs }) {
             </select>
           </div>
         </div>
-
-        <div className="row mt-3">
-          <RenderByCondition staffs={staffs} sortBy={selectValue} />
-        </div>
+        <FadeTransform
+          in
+          transformProps={{
+            exitTransform: 'scale(0.5) transformY(-50%)',
+          }}
+        >
+          <div className="row mt-3">
+            <RenderByCondition staffs={staffs} sortBy={selectValue} />
+          </div>
+        </FadeTransform>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import {
 } from 'reactstrap';
 import 'react-widgets/styles.css';
 import ModalForm from './ModalComponent';
+import { FadeTransform } from 'react-animation-components';
 
 const StaffList = ({ staffs, keyword }) => {
   if (!keyword) {
@@ -110,12 +111,19 @@ class StaffComponent extends Component {
             </div>
 
             {/* Render Staff List */}
-            <div className="row mt-3">
-              <StaffList
-                staffs={this.props.staffs}
-                keyword={this.state.searchKey}
-              />
-            </div>
+            <FadeTransform
+              in
+              transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)',
+              }}
+            >
+              <div className="row mt-3">
+                <StaffList
+                  staffs={this.props.staffs}
+                  keyword={this.state.searchKey}
+                />
+              </div>
+            </FadeTransform>
           </div>
         </div>
 
