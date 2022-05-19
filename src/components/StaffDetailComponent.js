@@ -1,10 +1,10 @@
 import dateFormat from 'dateformat';
 import logo from './../assets/images/alberto.png';
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button } from 'reactstrap';
 import Link from 'react-router-dom/Link';
 import '../css/StaffDetail.css';
-import { Button } from 'reactstrap';
 import ModalForm from './ModalComponent';
+import { Fade, Stagger } from 'react-animation-components';
 
 // Component render 1 staff detail item
 function RenderStaffDetail({ staff, department, deleteStaff, toggleModal }) {
@@ -14,15 +14,21 @@ function RenderStaffDetail({ staff, department, deleteStaff, toggleModal }) {
       <div className="staff__left col-12 col-md-4 col-lg-3">
         <img src={logo} alt={staff.name} />
       </div>
+
       <div className="staff__right col-12 col-md-8 col-lg-9 mt-3">
-        <h5>Họ và tên: {staff.name}</h5>
-        <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>
-        <p>Ngày vào công ty: {dateFormat(staff.startDate, 'dd/mm/yyyy')}</p>
-        <p>
-          Phòng ban: {department.name ? department.name : staff['department']}
-        </p>
-        <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
-        <p>Số ngày đã làm thêm : {staff.overTime}</p>
+        <Stagger in>
+          <Fade in>
+            <h5>Họ và tên: {staff.name}</h5>
+            <p>Ngày sinh: {dateFormat(staff.doB, 'dd/mm/yyyy')}</p>
+            <p>Ngày vào công ty: {dateFormat(staff.startDate, 'dd/mm/yyyy')}</p>
+            <p>
+              Phòng ban:{' '}
+              {department.name ? department.name : staff['department']}
+            </p>
+            <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
+            <p>Số ngày đã làm thêm : {staff.overTime}</p>
+          </Fade>
+        </Stagger>
         <Button
           onClick={() => {
             deleteStaff(staff.id);
