@@ -16,6 +16,7 @@ import 'react-widgets/styles.css';
 import { connect } from 'react-redux';
 import { toggleModal, postStaff, updateStaff } from '../redux/ActionCreators';
 import dateFormat from 'dateformat';
+import Swal from 'sweetalert2';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -85,6 +86,7 @@ class ModalForm extends Component {
           image: '/assets/images/alberto.png',
           salary,
         });
+
         break;
 
       case 'updateStaff':

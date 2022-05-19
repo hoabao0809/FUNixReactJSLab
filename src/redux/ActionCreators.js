@@ -1,9 +1,9 @@
 import * as ActionTypes from './ActionTypes';
 import * as apiServices from '../api/services';
+import Swal from 'sweetalert2';
 
 // ===============STAFFS===============
 export const fetchStaffs = () => (dispatch) => {
-  // dispatch(staffLoading())
   apiServices
     .get('staffs')
     .then((response) => response.json())
@@ -31,6 +31,7 @@ export const postStaff = (staff) => (dispatch) => {
     .post('staffs', staff)
     .then((response) => {
       if (response.ok) {
+        Swal.fire('Success!', '', 'success');
         dispatch(addStaff(staff));
         dispatch(fetchDepartments());
       }
@@ -47,6 +48,7 @@ export const updateStaff = (staff) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(fetchStaffs());
+        Swal.fire('Success!', '', 'success');
 
         console.log(response.statusText);
       }
@@ -63,6 +65,7 @@ export const deleteStaff = (staffId) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         dispatch(removeStaff(staffId));
+        Swal.fire('Success!', '', 'success');
         // window.history.replaceState('', '', '/staff');
         // window.location = '/#'; // Redirect to Staff Page after deleting staff
       }
