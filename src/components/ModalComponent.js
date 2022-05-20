@@ -81,7 +81,7 @@ class ModalForm extends Component {
       case 'addStaff':
         this.props.postStaff({
           ...values,
-          id: lastStaffArray.id + 1,
+          id: lastStaffArray ? lastStaffArray.id + 1 : 0,
           departmentId: departmentItem.id,
           image: '/assets/images/alberto.png',
           salary,
